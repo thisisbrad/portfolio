@@ -1,0 +1,127 @@
+---
+title: "Weighted scoring for coding challenges — the math I didn't expect to care about"
+type: build-log
+date: 2025-04-01
+readTime: "7 min read"
+tags: ["node.js", "mongodb", "scoring", "algorithms"]
+excerpt: "I started with a simple assumption: correctness is worth the most points. Two days later I had a spreadsheet full of edge cases."
+logNumber: 4
+featured: true
+---
+
+import Callout from '../../components/Callout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+
+I started with a simple assumption: correctness is worth the most points,
+speed matters a little, and streaks are a bonus multiplier. Seemed reasonable.
+Two days later I had a spreadsheet full of edge cases and a growing suspicion
+that "reasonable" wasn't going to cut it.
+
+## The naive model
+
+First pass was dead simple. A flat score: 100 points for a correct solution,
+minus a time penalty, plus a streak bonus.
+
+<CodeBlock filename="scoring.js" lang="javascript">
+```js
+// v1 — naive flat scoring
+function calculateScore({ correct, timeMs, streak }) {
+  if (!correct) return 0;
+
+  const BASE         = 100;
+  const timePenalty  = Math.min(50, Math.floor(timeMs / 1000));
+  const streakBonus  = streak * 5;
+
+  return BASE - timePenalty + streakBonus;
+}
+
+// Problem: a beginner taking 40s gets 60 pts
+// An expert taking 2s gets 148 pts
+// Same challenge. Very different experience.
+```
+</CodeBlock>
+
+The issue surfaced fast. The same challenge was demoralizing for beginners
+and trivial for advanced learners. A fixed baseline doesn't account for
+*who* is solving it.
+
+<Callout type="note" label="Note">
+This is the same problem game designers call **difficulty scaling** —
+the challenge has to meet the player where they are. A flat score ignores learner stage entirely.
+</Callout>
+
+## Introducing learner stage weights
+
+The fix was a weight map keyed to learner stage. Each stage gets its own
+multipliers for base score, time sensitivity, and streak value.
+
+<CodeBlock filename="scoring.js" lang="javascript">
+```js
+const STAGE_WEIGHTS = {
+  beginner:     { base: 100, timeSensitivity: 0.2, streakMult: 8 },
+  intermediate: { base: 100, timeSensitivity: 0.5, streakMult: 5 },
+  advanced:     { base: 100, timeSensitivity: 1.0, streakMult: 3 },
+};
+
+function calculateScore({ correct, timeMs, streak, stage = 'beginner' }) {
+  if (!correct) return 0;
+
+  const w = STAGE_WEIGHTS[stage];
+  const timePenalty = Math.min(50, Math.floor((timeMs / 1000) * w.timeSensitivity));
+  const streakBonus = streak * w.streakMult;
+
+  return Math.max(0, w.base - timePenalty + streakBonus);
+}
+```
+</CodeBlock>
+
+Now a beginner solving correctly in 40 seconds loses only 8 points to the
+time penalty. An advanced learner loses 40. Same problem, appropriately
+different stakes.
+
+## Attempt penalties
+
+The last piece was failed attempts. Letting someone brute-force a solution
+with 20 tries and still score 100 felt wrong. I landed on a logarithmic decay.
+
+<CodeBlock filename="scoring.js" lang="javascript">
+```js
+function attemptMultiplier(attempts) {
+  // 1 attempt  → 1.0  (no penalty)
+  // 2 attempts → 0.85
+  // 5 attempts → 0.63
+  // 10 attempts → 0.5
+  if (attempts <= 1) return 1.0;
+  return Math.max(0.5, 1 / Math.log2(attempts + 1));
+}
+
+function calculateScore({ correct, timeMs, streak, stage, attempts }) {
+  if (!correct) return 0;
+
+  const w = STAGE_WEIGHTS[stage ?? 'beginner'];
+  const timePenalty  = Math.min(50, Math.floor((timeMs / 1000) * w.timeSensitivity));
+  const streakBonus  = streak * w.streakMult;
+  const raw          = Math.max(0, w.base - timePenalty + streakBonus);
+
+  return Math.round(raw * attemptMultiplier(attempts));
+}
+```
+</CodeBlock>
+
+<Callout type="warn" label="What I'd change">
+The `Math.log2` curve felt right on paper but I'd want real learner data before shipping.
+The thresholds are currently vibes-based. A/B test candidates: `Math.log` (natural log) decays
+slower; a simple step function might be more transparent to learners.
+</Callout>
+
+## What's next
+
+This gets wired into the challenge submission endpoint next. After that:
+a leaderboard that segments by stage so beginners aren't competing
+against advanced learners on raw score.
+
+The math ended up simpler than I feared. The design decisions were harder.
+
+---
+
+*Build Log is a running series of posts about what I'm actually building. Short, technical, honest.*

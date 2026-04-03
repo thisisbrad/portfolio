@@ -1,0 +1,50 @@
+---
+title: "Repos cleaned, portfolio live — what 'ready' actually looks like"
+type: dev-return
+date: 2025-03-14
+readTime: "5 min read"
+tags: ["career", "dev life", "portfolio"]
+excerpt: "After two weeks of prep work, the portfolio is live and the repos are presentable. Here's what that process actually involved."
+seriesEntry: 3
+seriesTotal: 10
+---
+
+import Callout from '../../components/Callout.astro';
+
+There's a version of "getting ready to job search" that becomes a procrastination strategy. I've seen it. I almost became it. So I set a deadline: two weeks to get to a state I could call presentable, then start sending applications regardless of whether I felt ready.
+
+This is what those two weeks looked like.
+
+## The repo audit
+
+I had 23 public repositories. Most were fine. Some were embarrassing. A few were actively wrong in ways that would raise flags.
+
+What I dealt with:
+- **Deleted 4 repos** — tutorial follow-alongs with no original work, one abandoned half-migration that had `TODO: fix this` in 6 places
+- **Archived 7 repos** — real projects from 3+ years ago, not broken, just dated
+- **Updated READMEs on 5 repos** — these are the ones I'd actually show someone. Added what the project does, how to run it, what I'd do differently now
+- **Added a `.env.example`** to anything with environment variables — this should have been there from the start
+
+<Callout type="note" label="Lesson">
+The `.env.example` thing is embarrassing to admit. It's basic. But it's also the kind of thing that only matters when someone else is reading your code. I'd been writing for myself for a long time.
+</Callout>
+
+## The portfolio
+
+I built a minimal portfolio page. Not this blog — a separate, intentionally stripped-down page that answers three questions: who I am, what I've built, how to reach me.
+
+Stack: Astro + vanilla CSS. No React, no dependencies I don't need. The irony of a React developer building their portfolio in Astro is not lost on me. It builds to 4 files. It's fast. That's the point.
+
+## What "ready" actually means
+
+I told myself I'd know when I was ready. I don't think that's how it works.
+
+What actually happened was I ran out of things that felt immediately broken. The portfolio was live. The READMEs were readable. The repos I'd point someone to were ones I wouldn't be embarrassed by.
+
+That's not the same as ready. That's "defensible." And defensible is enough to start.
+
+<Callout type="warn" label="What I'd skip">
+I spent almost a full day restyling a project from 2021 to use my current CSS patterns. Completely unnecessary. Nobody looking at a 4-year-old project expects it to use 2025 conventions. Sunk cost thinking. Don't do this.
+</Callout>
+
+Week four is applications. The prep phase is done.

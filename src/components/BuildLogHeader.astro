@@ -1,0 +1,43 @@
+---
+interface Props {
+  title: string;
+  date: Date;
+  readTime: string;
+  tags: string[];
+  logNumber?: number;
+  techStack?: string;
+}
+const { title, date, readTime, tags, logNumber, techStack } = Astro.props;
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+<div class="post-header">
+  <div class="post-header-deco">
+    {logNumber && <span class="buildlog-number">{String(logNumber).padStart(2, '0')}</span>}
+    <div>
+      <div class="section-badge">
+        <span class="badge-icon">&#x1FAB5;</span> Build Log
+      </div>
+    </div>
+  </div>
+  <h1 class="post-title">
+    <span class="underline-accent">{title}</span>
+  </h1>
+  <div class="post-meta">
+    <span>{formattedDate}</span>
+    <span class="meta-divider">&middot;</span>
+    <span>{readTime}</span>
+    {techStack && (
+      <>
+        <span class="meta-divider">&middot;</span>
+        <span>{techStack}</span>
+      </>
+    )}
+  </div>
+  <div class="post-tags">
+    {tags.map(tag => <span class="tag">{tag}</span>)}
+  </div>
+</div>

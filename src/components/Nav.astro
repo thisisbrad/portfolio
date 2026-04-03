@@ -1,0 +1,19 @@
+---
+interface Props {
+  activeLink?: 'writing' | 'projects' | 'stack' | 'about';
+  wide?: boolean;
+}
+const { activeLink, wide = false } = Astro.props;
+---
+<nav>
+  <div class={`nav-inner${wide ? ' nav-inner--wide' : ''}`}>
+    <a class="nav-logo" href="/">BRAD.DEV</a>
+    <ul class="nav-links">
+      <li><a href="/" class={activeLink === 'writing' ? 'active' : ''}>Writing</a></li>
+      <li><a href="/projects" class={activeLink === 'projects' ? 'active' : ''}>Projects</a></li>
+      <li><a href="/stack" class={activeLink === 'stack' ? 'active' : ''}>Stack</a></li>
+      <li><a href="/about" class={activeLink === 'about' ? 'active' : ''}>About</a></li>
+      <li><a href="/rss.xml">RSS</a></li>
+    </ul>
+  </div>
+</nav>

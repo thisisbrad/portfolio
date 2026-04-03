@@ -1,0 +1,83 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import BuildLogHeader from '../components/BuildLogHeader.astro';
+import SearchHeader from '../components/SearchHeader.astro';
+import DevReturnHeader from '../components/DevReturnHeader.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+  prevPost?: CollectionEntry<'posts'> | null;
+  nextPost?: CollectionEntry<'posts'> | null;
+}
+
+const { post, prevPost, nextPost } = Astro.props;
+const {
+  title,
+  type,
+  date,
+  readTime,
+  tags,
+  logNumber,
+  seriesEntry,
+  seriesTotal,
+  excerpt,
+} = post.data;
+---
+
+<BaseLayout title={`${title} — BRAD.DEV`} description={excerpt} type={type}>
+  <div class="page">
+    {type === 'build-log' && (
+      <BuildLogHeader
+        title={title}
+        date={date}
+        readTime={readTime}
+        tags={tags}
+        logNumber={logNumber}
+      />
+    )}
+    {type === 'the-search' && (
+      <SearchHeader
+        title={title}
+        date={date}
+        readTime={readTime}
+        tags={tags}
+      />
+    )}
+    {type === 'dev-return' && (
+      <DevReturnHeader
+        title={title}
+        date={date}
+        readTime={readTime}
+        tags={tags}
+        seriesEntry={seriesEntry}
+        seriesTotal={seriesTotal}
+      />
+    )}
+
+    <article class="post-body">
+      <slot />
+    </article>
+
+    {(prevPost || nextPost) && (
+      <nav class="post-nav" aria-label="Post navigation">
+        {prevPost ? (
+          <a class="post-nav-item prev" href={`/posts/${prevPost.slug}`}>
+            <span class="pn-dir">&larr; Previous</span>
+            <span class="pn-title">{prevPost.data.title}</span>
+          </a>
+        ) : (
+          <div></div>
+        )}
+        {nextPost ? (
+          <a class="post-nav-item next" href={`/posts/${nextPost.slug}`}>
+            <span class="pn-dir">Next &rarr;</span>
+            <span class="pn-title">{nextPost.data.title}</span>
+          </a>
+        ) : (
+          <div></div>
+        )}
+      </nav>
+    )}
+  </div>
+</BaseLayout>

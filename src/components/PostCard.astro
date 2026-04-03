@@ -1,0 +1,62 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+  featured?: boolean;
+}
+
+const { post, featured = false } = Astro.props;
+const { title, type, date, readTime, excerpt, logNumber, seriesEntry } = post.data;
+
+// Map type to color class for the stripe
+const colorMap: Record<string, string> = {
+  'build-log':  'yellow',
+  'the-search': 'coral',
+  'dev-return': 'cyan',
+};
+const color = colorMap[type];
+
+// Map type to pill label
+const pillLabelMap: Record<string, string> = {
+  'build-log':  'Build Log',
+  'the-search': 'The Search',
+  'dev-return': 'Dev Return',
+};
+const pillLabel = pillLabelMap[type];
+
+// Map type to pill class
+const pillClassMap: Record<string, string> = {
+  'build-log':  'build',
+  'the-search': 'search',
+  'dev-return': 'devreturn',
+};
+const pillClass = pillClassMap[type];
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+
+// Suppress unused variable warnings — logNumber/seriesEntry available for future use
+void logNumber;
+void seriesEntry;
+---
+
+<a class={`post-card ${color}${featured ? ' featured' : ''}`} href={`/posts/${post.slug}`}>
+  {featured && (
+    <div class="featured-geo">
+      {type === 'build-log' ? '{ }' : type === 'the-search' ? '?' : '\u2694'}
+    </div>
+  )}
+  <div class={featured ? 'post-content' : ''}>
+    <span class={`post-pill ${pillClass}`}>{pillLabel}</span>
+    <h2>{title}</h2>
+    <p>{excerpt}</p>
+    <div class="post-meta">
+      <span>{formattedDate}</span>
+      <span>{readTime}</span>
+    </div>
+  </div>
+</a>

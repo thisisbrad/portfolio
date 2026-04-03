@@ -1,0 +1,16 @@
+---
+interface Props {
+  filename?: string;
+  lang?: string;
+}
+const { filename = '', lang = '' } = Astro.props;
+---
+<div class="code-block-wrap">
+  {filename && (
+    <div class="code-label">
+      <span>{filename}</span>
+      {lang && <span class="lang-tag">{lang.toUpperCase()}</span>}
+    </div>
+  )}
+  <slot />
+</div>
