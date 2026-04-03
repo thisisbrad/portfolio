@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
+import profileImg from '../assets/img/AI-Profile-Picture.png';
 
 // Fetch and sort all posts by date descending
 const allPosts = await getCollection('posts');
@@ -31,33 +32,41 @@ const stackItems = [
 
     <!-- Hero -->
     <section class="hero">
-      <span class="hero-eyebrow">// Personal Blog</span>
-      <h1>
-        Building<br />
-        <span class="highlight-cyan">real things</span><br />
-        <span class="highlight-coral">writing</span> it<br />
-        all down.
-      </h1>
-      <p class="hero-desc">
-        10 years of making things on the web. Now building in public —
-        honest logs, hard lessons, and whatever I'm figuring out this week.
-      </p>
-      <div class="hero-badges">
-        <span class="hero-badge yellow">JS &middot; Node &middot; React &middot; Next</span>
-        <span class="hero-badge cyan">&#x26A1; Open to Work</span>
-        <span class="hero-badge coral">10 Yrs Deep in Code</span>
+      <img class="hero-profile" src={profileImg.src} alt="" aria-hidden="true" />
+      <div class="hero-text">
+        <h1>
+          Building<br />
+          <span class="highlight cyan">real things</span><br />
+          <span class="highlight coral">writing</span> it<br />
+          all down.
+        </h1>
+        <p>
+          A developer's working log. Full-stack JS, React, Node, Next.js.
+          Posts about the build, the craft, and the search. No fluff — just
+          the work.
+        </p>
+      </div>
+      <div class="hero-badge">
+        <div class="badge badge-stack">JS &middot; Node &middot; React &middot; Next</div>
+        <div class="badge badge-status">&#x26A1; Open to Work</div>
+        <div class="badge badge-exp">10 Yrs Deep in Code</div>
       </div>
     </section>
 
     <!-- Stack Section -->
     <section class="stack-section">
-      <div class="stack-inner">
-        <span class="stack-label">// Stack</span>
-        <div class="stack-pills">
-          {stackItems.map(item => (
-            <span class="stack-pill">{item}</span>
-          ))}
-        </div>
+      <div class="stack-copy">
+        <span class="section-label">// Stack</span>
+        <h2 class="stack-heading">Tools I reach<br />for first.</h2>
+        <p class="stack-desc">
+          Full-stack JavaScript top to bottom. Production-tested, not
+          resume-padded.
+        </p>
+      </div>
+      <div class="stack-pills">
+        {stackItems.map(item => (
+          <span class="stack-pill">{item}</span>
+        ))}
       </div>
     </section>
 

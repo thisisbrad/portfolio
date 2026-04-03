@@ -202,23 +202,23 @@ nav {
 
 .nav-links a {
   font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: 0.875rem;
+  font-weight: 700;
+  font-size: 0.78rem;
   text-decoration: none;
   color: var(--black);
-  padding: 5px 14px;
-  border: 2px solid var(--black);
-  border-radius: 999px;
-  transition: background 0.1s, color 0.1s, transform 0.1s, box-shadow 0.1s;
+  padding: 5px 12px;
+  border: 2.5px solid var(--black);
+  background: var(--white);
+  transition: background 0.15s, transform 0.1s, box-shadow 0.1s;
+  box-shadow: 3px 3px 0 var(--black);
   display: inline-block;
   cursor: crosshair;
 }
 
 .nav-links a:hover {
-  background: var(--accent);
-  color: var(--black);
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 var(--black);
+  background: var(--cyan);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--black);
 }
 
 .nav-links a.active {
@@ -259,133 +259,144 @@ nav {
 
 /* ---- Hero Section ----------------------------------------- */
 .hero {
-  padding: 72px 0 56px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+  padding: 52px 0 40px;
+  border-bottom: 4px solid var(--black);
   animation: fadeUp 0.5s ease both;
+  position: relative;
+  overflow: hidden;
 }
 
-.hero-eyebrow {
-  display: inline-block;
-  background: var(--black);
-  color: var(--yellow);
-  font-family: 'Bricolage Grotesque', sans-serif;
-  font-weight: 700;
-  font-size: 0.78rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 4px 12px;
-  margin-bottom: 28px;
+.hero-profile {
+  position: absolute;
+  right: -10px;
+  top: 0;
+  height: 140%;
+  width: auto;
+  opacity: 0.88;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.hero h1 {
+.hero-text,
+.hero-badge {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-text h1 {
   font-family: 'Bricolage Grotesque', sans-serif;
   font-weight: 800;
-  font-size: clamp(3rem, 8vw, 5.5rem);
-  line-height: 1.0;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.6rem, 7vw, 4.8rem);
+  line-height: 0.95;
+  letter-spacing: -2px;
   color: var(--black);
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
-.hero h1 .highlight-cyan {
-  background: var(--cyan);
-  color: var(--black);
+.hero-text h1 .highlight {
+  background: var(--yellow);
   padding: 0 6px;
-  display: inline;
   border: 3px solid var(--black);
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
+  display: inline-block;
+  transform: rotate(-1.5deg);
+  line-height: 1.1;
 }
+.hero-text h1 .highlight.cyan  { background: var(--cyan); }
+.hero-text h1 .highlight.coral { background: var(--coral); color: var(--white); }
 
-.hero h1 .highlight-coral {
-  background: var(--coral);
-  color: var(--white);
-  padding: 0 6px;
-  display: inline;
-  border: 3px solid var(--black);
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-}
-
-.hero-desc {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.1rem;
-  max-width: 520px;
-  line-height: 1.65;
-  color: var(--black);
-  margin-bottom: 28px;
-}
-
-.hero-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.hero-text p {
+  font-size: 0.92rem;
+  line-height: 1.75;
+  max-width: 540px;
+  color: #222;
 }
 
 .hero-badge {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: 0.8rem;
-  padding: 6px 14px;
-  border: 2.5px solid var(--black);
-  background: var(--white);
-  box-shadow: 3px 3px 0 var(--black);
-  cursor: default;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
 }
 
-.hero-badge.yellow { background: var(--yellow); }
-.hero-badge.cyan   { background: var(--cyan); }
-.hero-badge.coral  { background: var(--coral); color: var(--white); }
+.badge {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: 3px solid var(--black);
+  box-shadow: 4px 4px 0 var(--black);
+  white-space: nowrap;
+}
+.badge-stack { background: var(--purple); color: var(--white); transform: rotate(1deg); }
+.badge-status { background: var(--green);  color: var(--black); transform: rotate(-2deg); }
+.badge-exp   { background: var(--orange); color: var(--white); transform: rotate(1.5deg); }
 
 /* ---- Stack Section ---------------------------------------- */
 .stack-section {
-  padding: 40px 0;
-  border-top: 3px solid var(--black);
-  border-bottom: 3px solid var(--black);
+  margin-top: 48px;
   margin-bottom: 48px;
-  background: var(--white);
-  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 28px;
+  border: 3px solid var(--black);
+  box-shadow: 8px 8px 0 var(--coral);
+  background:
+    linear-gradient(135deg, rgba(255, 77, 106, 0.1), rgba(0, 229, 255, 0.08)),
+    var(--white);
+  animation: fadeUp 0.5s 0.1s ease both;
 }
 
-.stack-inner {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
+.stack-copy .section-label {
+  margin-top: 0;
+  margin-bottom: 16px;
+  display: block;
 }
 
-.stack-label {
+.stack-heading {
   font-family: 'Bricolage Grotesque', sans-serif;
   font-weight: 800;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--black);
-  white-space: nowrap;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.0;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+
+.stack-desc {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: #333;
+  margin: 0;
 }
 
 .stack-pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  align-content: center;
+  gap: 10px;
 }
 
 .stack-pill {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: 0.8rem;
-  padding: 5px 13px;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
   border: 2.5px solid var(--black);
   background: var(--white);
-  box-shadow: 3px 3px 0 var(--black);
-  transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
-  cursor: default;
+  box-shadow: 4px 4px 0 var(--black);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.5px;
 }
 
-.stack-pill:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 var(--black);
-  background: var(--yellow);
-}
+.stack-pill:nth-child(odd)  { transform: rotate(-3deg); }
+.stack-pill:nth-child(even) { transform: rotate(2.5deg); }
 
 /* ---- Posts Grid ------------------------------------------- */
 .posts-grid {
@@ -715,7 +726,6 @@ footer {
   line-height: 1;
   color: var(--yellow);
   -webkit-text-stroke: 2.5px var(--black);
-  text-stroke: 2.5px var(--black);
   display: block;
   letter-spacing: -0.04em;
 }
@@ -1074,8 +1084,18 @@ pre.astro-code {
    ============================================================ */
 
 @media (max-width: 600px) {
-  .hero h1 {
-    font-size: 2.4rem;
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-profile {
+    display: none;
+  }
+
+  .hero-badge {
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   .post-card.featured {
@@ -1088,9 +1108,8 @@ pre.astro-code {
     font-size: 2.2rem;
   }
 
-  .stack-inner {
-    flex-direction: column;
-    align-items: flex-start;
+  .stack-section {
+    grid-template-columns: 1fr;
   }
 
   .post-nav {
@@ -1106,7 +1125,7 @@ pre.astro-code {
   }
 
   .nav-links a {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     padding: 4px 10px;
   }
 }
