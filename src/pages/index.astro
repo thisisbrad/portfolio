@@ -51,12 +51,12 @@ const stackItems = [
       <div class="hero-badge">
         <div class="badge badge-stack">JS &middot; Node &middot; React &middot; SQL</div>
         <div class="badge badge-status">Leadership</div>
-        <div class="badge badge-exp">10 Yrs Deep in Code</div>
+        <div class="badge badge-exp">10+ Yrs Deep in Code</div>
       </div>
     </section>
 
     <!-- Stack Section -->
-    <section class="stack-section">
+    <section class="stack-section scroll-reveal">
       <div class="stack-copy">
         <span class="section-label">// Stack</span>
         <h2 class="stack-heading">Tools I reach<br />for first.</h2>
@@ -88,3 +88,28 @@ const stackItems = [
 
   </div>
 </BaseLayout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const revealEls = document.querySelectorAll('.scroll-reveal');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      revealEls.forEach((el) => {
+        el.classList.remove('is-visible');
+        observer.observe(el);
+      });
+    } else {
+      revealEls.forEach((el) => el.classList.add('is-visible'));
+    }
+  });
+</script>
