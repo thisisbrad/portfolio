@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brad // Developer</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --black: #0d0d0d;
+        --white: #f5f0e8;
+        --yellow: #ffe600;
+        --cyan: #00e5ff;
+        --coral: #ff4d6a;
+        --green: #39ff14;
+        --purple: #c653ff;
+        --orange: #ff7a00;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--white);
+        color: var(--black);
+        font-family: "Space Mono", monospace;
+        overflow-x: hidden;
+        cursor: crosshair;
+      }
+
+      /* ── Memphis SVG background pattern ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+      /* dots */
+          radial-gradient(circle, var(--black) 1.5px, transparent 1.5px),
+          /* diagonal lines */
+          repeating-linear-gradient(
+              45deg,
+              transparent,
+              transparent 18px,
+              rgba(13, 13, 13, 0.06) 18px,
+              rgba(13, 13, 13, 0.06) 20px
+            );
+        background-size:
+          28px 28px,
+          40px 40px;
+        opacity: 0.55;
+      }
+
+      /* ── Floating Memphis shapes ── */
+      .shape {
+        position: fixed;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.18;
+      }
+      .shape-1 {
+        /* big circle top-right */
+        width: 340px;
+        height: 340px;
+        border-radius: 50%;
+        background: var(--cyan);
+        top: -80px;
+        right: -80px;
+        opacity: 0.22;
+      }
+      .shape-2 {
+        /* squiggle/triangle bottom-left */
+        width: 0;
+        height: 0;
+        border-left: 110px solid transparent;
+        border-right: 110px solid transparent;
+        border-bottom: 190px solid var(--coral);
+        bottom: 60px;
+        left: -30px;
+        opacity: 0.2;
+      }
+      .shape-3 {
+        /* small square mid-right */
+        width: 80px;
+        height: 80px;
+        background: var(--yellow);
+        top: 50%;
+        right: 6%;
+        transform: rotate(22deg);
+        opacity: 0.35;
+      }
+      .shape-4 {
+        /* ring */
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        border: 22px solid var(--purple);
+        bottom: 25%;
+        left: 8%;
+        opacity: 0.2;
+      }
+      .shape-5 {
+        /* small circle */
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--green);
+        top: 38%;
+        left: 3%;
+        opacity: 0.3;
+      }
+
+      /* ── Layout ── */
+      .site-wrapper {
+        position: relative;
+        z-index: 1;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 24px 80px;
+      }
+
+      /* ── Nav ── */
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 28px 0 20px;
+        border-bottom: 4px solid var(--black);
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .nav-logo {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 1.5rem;
+        letter-spacing: -1px;
+        color: var(--black);
+        text-decoration: none;
+        background: var(--yellow);
+        padding: 4px 12px;
+        border: 3px solid var(--black);
+        box-shadow: 4px 4px 0 var(--black);
+        transition:
+          transform 0.1s,
+          box-shadow 0.1s;
+      }
+      .nav-logo:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 var(--black);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 8px;
+        list-style: none;
+        flex-wrap: wrap;
+      }
+      .nav-links a {
+        font-family: "Space Mono", monospace;
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-decoration: none;
+        color: var(--black);
+        padding: 5px 12px;
+        border: 2.5px solid var(--black);
+        background: var(--white);
+        transition:
+          background 0.15s,
+          transform 0.1s,
+          box-shadow 0.1s;
+        box-shadow: 3px 3px 0 var(--black);
+      }
+      .nav-links a:hover {
+        background: var(--cyan);
+        transform: translate(-2px, -2px);
+        box-shadow: 5px 5px 0 var(--black);
+      }
+      .nav-links a.active {
+        background: var(--coral);
+        color: var(--white);
+      }
+
+      /* ── Hero ── */
+      .hero {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: end;
+        gap: 24px;
+        padding: 52px 0 40px;
+        border-bottom: 4px solid var(--black);
+      }
+
+      .hero-text h1 {
+        font-family: "Archivo Black", sans-serif;
+        font-size: clamp(2.6rem, 7vw, 4.8rem);
+        line-height: 0.95;
+        letter-spacing: -2px;
+        color: var(--black);
+        margin-bottom: 20px;
+      }
+
+      .hero-text h1 span.highlight {
+        background: var(--yellow);
+        padding: 0 6px;
+        border: 3px solid var(--black);
+        display: inline-block;
+        transform: rotate(-1.5deg);
+        line-height: 1.1;
+      }
+      .hero-text h1 span.highlight.cyan {
+        background: var(--cyan);
+      }
+      .hero-text h1 span.highlight.coral {
+        background: var(--coral);
+        color: var(--white);
+      }
+
+      .hero-text p {
+        font-size: 0.92rem;
+        line-height: 1.75;
+        max-width: 540px;
+        color: #222;
+      }
+
+      .hero-badge {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-end;
+      }
+
+      .badge {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 6px 14px;
+        border: 3px solid var(--black);
+        box-shadow: 4px 4px 0 var(--black);
+        white-space: nowrap;
+      }
+      .badge-stack {
+        background: var(--purple);
+        color: var(--white);
+        transform: rotate(1deg);
+      }
+      .badge-status {
+        background: var(--green);
+        color: var(--black);
+        transform: rotate(-2deg);
+      }
+      .badge-exp {
+        background: var(--orange);
+        color: var(--white);
+        transform: rotate(1.5deg);
+      }
+
+      /* ── Section header ── */
+      .section-label {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 0.72rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        display: inline-block;
+        background: var(--black);
+        color: var(--yellow);
+        padding: 5px 14px;
+        margin-bottom: 24px;
+        margin-top: 48px;
+      }
+
+      /* ── Post cards ── */
+      .posts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 20px;
+      }
+
+      .post-card {
+        border: 3px solid var(--black);
+        background: var(--white);
+        box-shadow: 6px 6px 0 var(--black);
+        padding: 22px 20px 18px;
+        text-decoration: none;
+        color: var(--black);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        transition:
+          transform 0.12s,
+          box-shadow 0.12s;
+        position: relative;
+        overflow: hidden;
+      }
+      .post-card:hover {
+        transform: translate(-3px, -3px);
+        box-shadow: 9px 9px 0 var(--black);
+      }
+
+      /* color stripe top */
+      .post-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+      }
+      .post-card.yellow::before {
+        background: var(--yellow);
+      }
+      .post-card.cyan::before {
+        background: var(--cyan);
+      }
+      .post-card.coral::before {
+        background: var(--coral);
+      }
+      .post-card.green::before {
+        background: var(--green);
+      }
+      .post-card.purple::before {
+        background: var(--purple);
+      }
+
+      .post-pill {
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        padding: 3px 9px;
+        border: 2px solid var(--black);
+        display: inline-block;
+        width: fit-content;
+        margin-top: 4px;
+      }
+      .post-pill.build {
+        background: var(--yellow);
+      }
+      .post-pill.craft {
+        background: var(--cyan);
+      }
+      .post-pill.search {
+        background: var(--coral);
+        color: var(--white);
+      }
+
+      .post-card h2 {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 1.05rem;
+        line-height: 1.3;
+        letter-spacing: -0.3px;
+      }
+
+      .post-card p {
+        font-size: 0.82rem;
+        line-height: 1.65;
+        color: #333;
+        flex: 1;
+      }
+
+      .post-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.7rem;
+        color: #555;
+        border-top: 2px solid var(--black);
+        padding-top: 10px;
+        margin-top: 4px;
+      }
+
+      /* ── Featured post ── */
+      .post-card.featured {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+        padding: 28px;
+      }
+      .post-card.featured .post-content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .post-card.featured h2 {
+        font-size: 1.5rem;
+      }
+      .post-card.featured p {
+        font-size: 0.88rem;
+      }
+
+      .featured-geo {
+        background: var(--yellow);
+        border: 3px solid var(--black);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Archivo Black", sans-serif;
+        font-size: 3.5rem;
+        color: var(--black);
+        min-height: 140px;
+        position: relative;
+        overflow: hidden;
+      }
+      .featured-geo::before {
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: var(--coral);
+        top: -30px;
+        right: -30px;
+        opacity: 0.5;
+      }
+      .featured-geo::after {
+        content: "";
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: var(--cyan);
+        bottom: -10px;
+        left: -10px;
+        transform: rotate(30deg);
+        opacity: 0.6;
+      }
+
+      /* ── Stack bar ── */
+      .stack-bar {
+        margin-top: 48px;
+        border: 3px solid var(--black);
+        background: var(--black);
+        padding: 16px 22px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        box-shadow: 6px 6px 0 var(--coral);
+      }
+      .stack-bar-label {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--yellow);
+        white-space: nowrap;
+      }
+      .stack-tag {
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 4px 11px;
+        border: 2px solid var(--white);
+        color: var(--white);
+        letter-spacing: 0.5px;
+      }
+      .stack-tag:hover {
+        background: var(--yellow);
+        color: var(--black);
+        border-color: var(--yellow);
+        cursor: default;
+      }
+
+      /* ── Footer ── */
+      footer {
+        margin-top: 64px;
+        border-top: 4px solid var(--black);
+        padding-top: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        font-size: 0.75rem;
+        color: #444;
+      }
+      footer strong {
+        font-family: "Archivo Black", sans-serif;
+        font-size: 0.85rem;
+        color: var(--black);
+      }
+      .footer-geo {
+        display: flex;
+        gap: 10px;
+      }
+      .geo-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2.5px solid var(--black);
+      }
+
+      /* ── Animations ── */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .hero {
+        animation: fadeUp 0.5s ease both;
+      }
+      .stack-bar {
+        animation: fadeUp 0.5s 0.1s ease both;
+      }
+      .posts-grid {
+        animation: fadeUp 0.5s 0.2s ease both;
+      }
+
+      /* ── Memphis decorative divider ── */
+      .memphis-divider {
+        height: 14px;
+        background: repeating-linear-gradient(
+          90deg,
+          var(--yellow) 0px,
+          var(--yellow) 24px,
+          var(--coral) 24px,
+          var(--coral) 48px,
+          var(--cyan) 48px,
+          var(--cyan) 72px,
+          var(--green) 72px,
+          var(--green) 96px,
+          var(--purple) 96px,
+          var(--purple) 120px,
+          var(--orange) 120px,
+          var(--orange) 144px
+        );
+        border-top: 3px solid var(--black);
+        border-bottom: 3px solid var(--black);
+        margin: 0;
+      }
+
+      @media (max-width: 600px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+        .hero-badge {
+          align-items: flex-start;
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+        .post-card.featured {
+          grid-template-columns: 1fr;
+        }
+        .featured-geo {
+          min-height: 80px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Background shapes -->
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+    <div class="shape shape-5"></div>
+
+    <div class="memphis-divider"></div>
+
+    <div class="site-wrapper">
+      <!-- Nav -->
+      <nav>
+        <a class="nav-logo" href="#">BRAD.DEV</a>
+        <ul class="nav-links">
+          <li><a href="#" class="active">Writing</a></li>
+          <li><a href="#">Projects</a></li>
+          <li><a href="#">Stack</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">RSS</a></li>
+        </ul>
+      </nav>
+
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-text">
+          <h1>
+            Building<br />
+            <span class="highlight cyan">real things</span><br />
+            <span class="highlight coral">writing</span> it<br />
+            all down.
+          </h1>
+          <p>
+            A developer's working log. Full-stack JS, React, Node, Next.js.
+            Posts about the build, the craft, and the search. No fluff — just
+            the work.
+          </p>
+        </div>
+        <div class="hero-badge">
+          <div class="badge badge-stack">JS · Node · React · Next</div>
+          <div class="badge badge-status">⚡ Open to Work</div>
+          <div class="badge badge-exp">10 Yrs Deep in Code</div>
+        </div>
+      </div>
+
+      <!-- Stack bar -->
+      <div class="stack-bar">
+        <span class="stack-bar-label">Stack //</span>
+        <span class="stack-tag">JavaScript</span>
+        <span class="stack-tag">Node.js</span>
+        <span class="stack-tag">React</span>
+        <span class="stack-tag">Next.js</span>
+        <span class="stack-tag">Express</span>
+        <span class="stack-tag">PostgreSQL</span>
+        <span class="stack-tag">MongoDB</span>
+        <span class="stack-tag">Prisma</span>
+      </div>
+
+      <!-- Posts -->
+      <div class="section-label">// Latest Posts</div>
+
+      <div class="posts-grid">
+        <!-- Featured -->
+        <a class="post-card featured yellow" href="#">
+          <div class="featured-geo">{ }</div>
+          <div class="post-content">
+            <span class="post-pill build">Build Log</span>
+            <h2>
+              Rebuilding my dungeon-crawler challenge app in Next.js — what I
+              kept, what I burned
+            </h2>
+            <p>
+              I had a working Express/MongoDB version. I migrated it to Next.js
+              + PostgreSQL + Prisma. Here's every decision that mattered, and
+              one I'd take back.
+            </p>
+            <div class="post-meta">
+              <span>Mar 28, 2025</span>
+              <span>6 min read</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a class="post-card cyan" href="#">
+          <span class="post-pill craft">Craft</span>
+          <h2>Why I stopped explaining and started building alongside</h2>
+          <p>
+            There's a specific bad habit I developed over a decade of teaching.
+            Here's how I noticed it in my code.
+          </p>
+          <div class="post-meta">
+            <span>Mar 21, 2025</span>
+            <span>4 min read</span>
+          </div>
+        </a>
+
+        <!-- Card 3 -->
+        <a class="post-card coral" href="#">
+          <span class="post-pill search">The Search</span>
+          <h2>Dev Return #01 — what the first two weeks looked like</h2>
+          <p>
+            Projects dusted off, repos updated, first cold applications sent. No
+            sugarcoating.
+          </p>
+          <div class="post-meta">
+            <span>Mar 14, 2025</span>
+            <span>3 min read</span>
+          </div>
+        </a>
+
+        <!-- Card 4 -->
+        <a class="post-card green" href="#">
+          <span class="post-pill build">Build Log</span>
+          <h2>
+            Scoring systems for coding challenges — the math I didn't expect to
+            care about
+          </h2>
+          <p>
+            Correctness, speed, streaks, attempt penalties. Designing a system
+            that's fair and tunable by learner stage.
+          </p>
+          <div class="post-meta">
+            <span>Mar 7, 2025</span>
+            <span>5 min read</span>
+          </div>
+        </a>
+
+        <!-- Card 5 -->
+        <a class="post-card purple" href="#">
+          <span class="post-pill craft">Craft</span>
+          <h2>Custom Google OAuth middleware without third-party libraries</h2>
+          <p>
+            Passport is fine. Not using it taught me things Passport was quietly
+            doing for me.
+          </p>
+          <div class="post-meta">
+            <span>Feb 28, 2025</span>
+            <span>7 min read</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Footer -->
+      <footer>
+        <div>
+          <strong>BRAD.DEV</strong><br />
+          Developer · Builder · Writer
+        </div>
+        <div class="footer-geo">
+          <div class="geo-dot" style="background: var(--yellow)"></div>
+          <div class="geo-dot" style="background: var(--cyan)"></div>
+          <div class="geo-dot" style="background: var(--coral)"></div>
+          <div class="geo-dot" style="background: var(--green)"></div>
+          <div class="geo-dot" style="background: var(--purple)"></div>
+        </div>
+        <div style="text-align: right">
+          <a
+            href="#"
+            style="
+              color: var(--black);
+              text-decoration: none;
+              font-weight: 700;
+              border-bottom: 2px solid var(--black);
+            "
+            >github</a
+          >
+          &nbsp;·&nbsp;
+          <a
+            href="#"
+            style="
+              color: var(--black);
+              text-decoration: none;
+              font-weight: 700;
+              border-bottom: 2px solid var(--black);
+            "
+            >linkedin</a
+          >
+          &nbsp;·&nbsp;
+          <a
+            href="#"
+            style="
+              color: var(--black);
+              text-decoration: none;
+              font-weight: 700;
+              border-bottom: 2px solid var(--black);
+            "
+            >rss</a
+          >
+        </div>
+      </footer>
+    </div>
+
+    <div class="memphis-divider"></div>
+  </body>
+</html>
