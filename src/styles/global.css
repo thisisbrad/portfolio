@@ -24,6 +24,15 @@ body.theme-buildlog  { --accent: var(--yellow);  --accent-dark: var(--black); }
 body.theme-search    { --accent: var(--coral);   --accent-dark: var(--white); }
 body.theme-devreturn { --accent: var(--cyan);    --accent-dark: var(--black); }
 
+/* Post pages: replace busy home-page pattern with a subtle dot grid */
+body.theme-buildlog::before,
+body.theme-search::before,
+body.theme-devreturn::before {
+  background-image: radial-gradient(circle, rgba(13,13,13,0.07) 1.5px, transparent 1.5px);
+  background-size: 26px 26px;
+  opacity: 1;
+}
+
 /* ---- Reset ------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -247,14 +256,39 @@ nav {
 
 /* ---- Animations ------------------------------------------- */
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Memphis: title line slides up from below, staggered */
+@keyframes titleLineIn {
+  from { opacity: 0; transform: translateY(36px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Memphis: highlight badge stamps down with rotation bounce */
+@keyframes highlightStamp {
+  0%   { opacity: 0; transform: rotate(-14deg) scale(0.4) translateY(-12px); }
+  50%  { opacity: 1; transform: rotate(-0.5deg) scale(1.14) translateY(3px); }
+  70%  { transform: rotate(-2deg) scale(0.97); }
+  85%  { transform: rotate(-1.2deg) scale(1.03); }
+  100% { transform: rotate(-1.5deg) scale(1); }
+}
+
+/* Memphis: profile image slides in from right, photo-developing filter */
+@keyframes heroImageIn {
+  0%   { opacity: 0; transform: translateX(110px); filter: brightness(2.5) saturate(0); }
+  25%  { opacity: 0.88; filter: brightness(1.6) saturate(0.4); }
+  65%  { transform: translateX(-10px); filter: brightness(1.1) saturate(1.1); }
+  100% { opacity: 0.88; transform: translateX(0); filter: brightness(1) saturate(1); }
+}
+
+/* Memphis: badge pops in with scale + rotation bounce */
+@keyframes badgePop {
+  0%   { opacity: 0; transform: scale(0.15) rotate(calc(var(--rot, 0deg) + 22deg)); }
+  55%  { opacity: 1; transform: scale(1.2) rotate(calc(var(--rot, 0deg) - 3deg)); }
+  75%  { transform: scale(0.94) rotate(calc(var(--rot, 0deg) + 1.5deg)); }
+  100% { opacity: 1; transform: scale(1) rotate(var(--rot, 0deg)); }
 }
 
 /* ---- Hero Section ----------------------------------------- */
@@ -265,9 +299,16 @@ nav {
   gap: 24px;
   padding: 52px 0 40px;
   border-bottom: 4px solid var(--black);
-  animation: fadeUp 0.5s ease both;
   position: relative;
+}
+
+/* Clip wrapper — isolates overflow to the image only, not the text animations */
+.hero-image-clip {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hero-profile {
@@ -278,7 +319,7 @@ nav {
   width: auto;
   opacity: 0.88;
   pointer-events: none;
-  z-index: 0;
+  animation: heroImageIn 1s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .hero-text,
@@ -297,22 +338,33 @@ nav {
   margin-bottom: 20px;
 }
 
+/* Title line — each line animates independently, staggered */
+.hero-text h1 .title-line {
+  display: block;
+  animation: titleLineIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-text h1 .title-line.l1 { animation-delay: 0.05s; }
+.hero-text h1 .title-line.l2 { animation-delay: 0.18s; }
+.hero-text h1 .title-line.l3 { animation-delay: 0.30s; }
+.hero-text h1 .title-line.l4 { animation-delay: 0.42s; }
+
 .hero-text h1 .highlight {
   background: var(--yellow);
   padding: 0 6px;
   border: 3px solid var(--black);
   display: inline-block;
-  transform: rotate(-1.5deg);
   line-height: 1.1;
+  animation: highlightStamp 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
-.hero-text h1 .highlight.cyan  { background: var(--cyan); }
-.hero-text h1 .highlight.coral { background: var(--coral); color: var(--white); }
+.hero-text h1 .highlight.cyan  { background: var(--cyan); animation-delay: 0.55s; }
+.hero-text h1 .highlight.coral { background: var(--coral); color: var(--white); animation-delay: 0.7s; }
 
 .hero-text p {
   font-size: 0.92rem;
   line-height: 1.75;
   max-width: 540px;
   color: #222;
+  animation: fadeUp 0.5s 0.85s ease both;
 }
 
 .hero-badge {
@@ -334,9 +386,12 @@ nav {
   box-shadow: 4px 4px 0 var(--black);
   white-space: nowrap;
 }
-.badge-stack { background: var(--purple); color: var(--white); transform: rotate(1deg); }
-.badge-status { background: var(--green);  color: var(--black); transform: rotate(-2deg); }
-.badge-exp   { background: var(--orange); color: var(--white); transform: rotate(1.5deg); }
+.badge-stack  { --rot:  1deg;   background: var(--purple); color: var(--white);
+                animation: badgePop 0.65s 0.9s  cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.badge-status { --rot: -2deg;   background: var(--green);  color: var(--black);
+                animation: badgePop 0.65s 1.05s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.badge-exp    { --rot:  1.5deg; background: var(--orange); color: var(--white);
+                animation: badgePop 0.65s 1.2s  cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 
 /* ---- Stack Section ---------------------------------------- */
 .stack-section {
@@ -690,6 +745,11 @@ footer {
   cursor: default;
 }
 
+.tag:hover {
+  background: var(--accent);
+  color: var(--accent-dark);
+}
+
 /* ---- Section Badge ---------------------------------------- */
 .section-badge {
   display: inline-flex;
@@ -722,10 +782,10 @@ footer {
 
 .buildlog-number {
   font-family: 'Archivo Black', sans-serif;
-  font-size: 3.5rem;
+  font-size: 5rem;
   line-height: 1;
   color: var(--yellow);
-  -webkit-text-stroke: 2.5px var(--black);
+  -webkit-text-stroke: 3px var(--black);
   display: block;
   letter-spacing: -0.04em;
 }
@@ -735,9 +795,24 @@ footer {
   background: var(--black);
   color: var(--white);
   padding: 40px 32px;
-  border: 3px solid var(--black);
+  border: none;
   box-shadow: 8px 8px 0 var(--coral);
   margin-bottom: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-search .post-header::before {
+  content: '';
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 28px solid var(--coral);
+  top: -60px;
+  right: -60px;
+  opacity: 0.25;
+  pointer-events: none;
 }
 
 .theme-search .post-title {
@@ -752,6 +827,12 @@ footer {
   background: transparent;
   border-color: rgba(245, 240, 232, 0.4);
   color: var(--white);
+}
+
+.theme-search .tag:hover {
+  background: var(--coral);
+  color: var(--white);
+  border-color: var(--coral);
 }
 
 .search-subtitle {
@@ -771,12 +852,15 @@ footer {
 
 .devreturn-series {
   font-family: 'Space Mono', monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--cyan);
+  color: var(--black);
+  background: var(--cyan);
+  display: inline-block;
+  padding: 3px 10px;
+  border: 2px solid var(--black);
   margin-bottom: 10px;
-  -webkit-text-stroke: 0.5px var(--black);
 }
 
 .devreturn-progress {
@@ -830,25 +914,25 @@ footer {
   font-family: 'Archivo Black', sans-serif;
   font-weight: 400;
   font-size: 1.45rem;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.5px;
   line-height: 1.25;
   color: var(--black);
-  padding-left: 18px;
-  position: relative;
-  margin-top: 2.5em;
-  margin-bottom: 0.75em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2.4em;
+  margin-bottom: 0.7em;
 }
 
 .post-body h2::before {
   content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
   background: var(--accent);
-  border: 2px solid var(--black);
+  border: 2.5px solid var(--black);
+  transform: rotate(10deg);
 }
 
 .post-body h3 {
@@ -979,55 +1063,36 @@ pre.astro-code {
 /* ---- Callout ---------------------------------------------- */
 .callout {
   border: 3px solid var(--black);
-  padding: 16px 20px 16px 20px;
+  padding: 18px 20px;
   margin: 2em 0;
   position: relative;
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.93rem;
   line-height: 1.6;
-  box-shadow: 4px 4px 0 var(--black);
+  box-shadow: 5px 5px 0 var(--black);
 }
 
 .callout::before {
   content: attr(data-label);
-  display: block;
   font-family: 'Space Mono', monospace;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  background: var(--accent);
+  color: var(--accent-dark);
+  border: 2px solid var(--black);
+  padding: 2px 10px;
+  position: absolute;
+  top: -14px;
+  left: 14px;
 }
 
-.callout.note {
-  background: var(--cyan);
-  color: var(--black);
-}
+.callout p { margin-bottom: 0; }
 
-.callout.note::before {
-  color: var(--black);
-  opacity: 0.6;
-}
-
-.callout.warn {
-  background: var(--yellow);
-  color: var(--black);
-}
-
-.callout.warn::before {
-  color: var(--black);
-  opacity: 0.6;
-}
-
-.callout.red {
-  background: var(--coral);
-  color: var(--white);
-}
-
-.callout.red::before {
-  color: var(--white);
-  opacity: 0.8;
-}
+.callout.note  { background: #e8f8ff; }
+.callout.warn  { background: #fff8e1; }
+.callout.red   { background: #fff0f2; }
 
 /* ---- Post Navigation -------------------------------------- */
 .post-nav {
@@ -1088,7 +1153,7 @@ pre.astro-code {
     grid-template-columns: 1fr;
   }
 
-  .hero-profile {
+  .hero-image-clip {
     display: none;
   }
 
@@ -1110,6 +1175,10 @@ pre.astro-code {
 
   .stack-section {
     grid-template-columns: 1fr;
+  }
+
+  .buildlog-number {
+    font-size: 3.5rem;
   }
 
   .post-nav {

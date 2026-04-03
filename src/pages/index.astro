@@ -32,13 +32,15 @@ const stackItems = [
 
     <!-- Hero -->
     <section class="hero">
-      <img class="hero-profile" src={profileImg.src} alt="" aria-hidden="true" />
+      <div class="hero-image-clip">
+        <img class="hero-profile" src={profileImg.src} alt="" aria-hidden="true" />
+      </div>
       <div class="hero-text">
         <h1>
-          Building<br />
-          <span class="highlight cyan">real things</span><br />
-          <span class="highlight coral">writing</span> it<br />
-          all down.
+          <span class="title-line l1">Building</span>
+          <span class="title-line l2"><span class="highlight cyan">real things</span></span>
+          <span class="title-line l3"><span class="highlight coral">writing</span> it</span>
+          <span class="title-line l4">all down.</span>
         </h1>
         <p>
           A developer's working log. Full-stack JS, React, Node, Next.js.
