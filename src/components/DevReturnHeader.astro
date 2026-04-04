@@ -19,16 +19,111 @@ const pips = Array.from({ length: seriesTotal }, (_, i) => {
   return 'empty';
 });
 ---
-<div class="post-header">
+<div class="post-header devreturn-header">
   <div class="devreturn-series">Dev Return Series</div>
-  <div class="section-badge">
-    <span class="badge-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" width="18" height="18" aria-hidden="true" focusable="false">
-        <rect x="1" y="1" width="16" height="16" fill="#00e5ff" stroke="#0d0d0d" stroke-width="1.5"/>
-        <polyline points="3,12 9,6 15,12" fill="none" stroke="#0d0d0d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <polyline points="3,15 9,9 15,15" fill="none" stroke="#0d0d0d" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
+  <div class="section-badge badge-with-icon">
+    <span class="badge-icon-burst" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" width="240" height="280">
+        <defs>
+          <style>
+            .dr-label {
+              font-family: 'Bricolage Grotesque', 'Arial Black', sans-serif;
+              font-size: 11px;
+              font-weight: 800;
+              letter-spacing: 2px;
+              text-transform: uppercase;
+              fill: #0d0d0d;
+            }
+            .dr-bg-sq {
+              transform-origin: 60px 60px;
+              animation: drPopIn 0.45s cubic-bezier(0.34,1.4,0.64,1) both;
+            }
+            @keyframes drPopIn {
+              from { transform: scale(0.6); opacity: 0; }
+              to   { transform: scale(1);   opacity: 1; }
+            }
+            .dr-pip { opacity: 0; animation: drPipIn 0.2s ease forwards; }
+            .dr-pip1 { animation-delay: 0.3s; }
+            .dr-pip2 { animation-delay: 0.45s; }
+            .dr-pip3 { animation-delay: 0.6s; }
+            .dr-pip4 { animation-delay: 0.75s; opacity: 0.2; animation: drPipInFade 0.2s 0.75s ease forwards; }
+            @keyframes drPipIn     { to { opacity: 1; } }
+            @keyframes drPipInFade { to { opacity: 0.2; } }
+            .dr-chev-1 {
+              stroke-dasharray: 80;
+              stroke-dashoffset: 80;
+              animation: drDrawChev 0.45s 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+            }
+            .dr-chev-2 {
+              stroke-dasharray: 80;
+              stroke-dashoffset: 80;
+              animation: drDrawChev 0.45s 0.65s cubic-bezier(0.4,0,0.2,1) forwards;
+            }
+            @keyframes drDrawChev {
+              to { stroke-dashoffset: 0; }
+            }
+            .dr-pdot {
+              transform-origin: 28px 88px;
+              animation: drBounceIn 0.5s 0.75s cubic-bezier(0.34,1.8,0.64,1) both;
+            }
+            @keyframes drBounceIn {
+              from { transform: scale(0); opacity: 0; }
+              to   { transform: scale(1); opacity: 1; }
+            }
+            .dr-icon-group { cursor: pointer; }
+            .dr-icon-group:hover .dr-chev-1 {
+              animation: drMarch 0.6s ease infinite;
+            }
+            .dr-icon-group:hover .dr-chev-2 {
+              animation: drMarch 0.6s 0.15s ease infinite;
+            }
+            @keyframes drMarch {
+              0%   { transform: translateX(0);   opacity: 1; }
+              60%  { transform: translateX(6px); opacity: 0.5; }
+              61%  { transform: translateX(-4px); opacity: 0; }
+              62%  { transform: translateX(-4px); opacity: 0; }
+              100% { transform: translateX(0);   opacity: 1; }
+            }
+            .dr-icon-group:hover .dr-pip3 {
+              animation: drFlash 0.5s ease infinite;
+            }
+            @keyframes drFlash {
+              0%, 100% { opacity: 1; }
+              50%       { opacity: 0.3; }
+            }
+            .dr-label-wrap {
+              animation: drFadeUp 0.4s 0.9s ease both;
+            }
+            @keyframes drFadeUp {
+              from { opacity: 0; transform: translateY(6px); }
+              to   { opacity: 1; transform: translateY(0); }
+            }
+          </style>
+        </defs>
+        <g class="dr-icon-group">
+          <rect x="26" y="26" width="80" height="80" fill="#0d0d0d" opacity="0.18"/>
+          <rect class="dr-bg-sq" x="20" y="20" width="80" height="80" fill="#00E5FF" stroke="#0d0d0d" stroke-width="3"/>
+          <rect class="dr-pip dr-pip1" x="26" y="27" width="13" height="9" fill="#0d0d0d"/>
+          <rect class="dr-pip dr-pip2" x="43" y="27" width="13" height="9" fill="#0d0d0d"/>
+          <rect class="dr-pip dr-pip3" x="60" y="27" width="13" height="9" fill="#0d0d0d"/>
+          <rect class="dr-pip dr-pip4" x="77" y="27" width="13" height="9" fill="#0d0d0d"/>
+          <polyline class="dr-chev-1"
+            points="26,72 60,42 94,72"
+            fill="none" stroke="#0d0d0d" stroke-width="8"
+            stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline class="dr-chev-2"
+            points="26,84 60,56 94,84"
+            fill="none" stroke="#0d0d0d" stroke-width="3.5"
+            stroke-linecap="round" stroke-linejoin="round"
+            opacity="0.28"/>
+          <circle class="dr-pdot" cx="28" cy="88" r="6" fill="#C653FF" stroke="#0d0d0d" stroke-width="2"/>
+          <g class="dr-label-wrap">
+            <text x="60" y="125" text-anchor="middle" class="dr-label">Dev Return</text>
+          </g>
+        </g>
       </svg>
-    </span> Entry #{seriesEntry} of {seriesTotal}
+    </span>
+    Entry #{seriesEntry} of {seriesTotal}
   </div>
   <h1 class="post-title">{title}</h1>
   <div class="post-meta">

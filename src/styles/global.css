@@ -753,6 +753,7 @@ footer {
   padding: 0 24px 80px;
   position: relative;
   z-index: 1;
+  overflow: visible;
 }
 
 /* ---- Post Header ------------------------------------------ */
@@ -760,6 +761,8 @@ footer {
   padding: 48px 0 36px;
   border-bottom: 3px solid var(--black);
   margin-bottom: 48px;
+  /* Allow bursting icons to overflow without clipping */
+  overflow: visible;
 }
 
 .post-title {
@@ -835,6 +838,37 @@ footer {
   margin-bottom: 18px;
 }
 
+/* Badge with bursting icon — icon pops out above */
+.section-badge.badge-with-icon {
+  position: relative;
+  /* Leave room above for the overflowing icon (half of 280px icon height) */
+  margin-top: 148px;
+  overflow: visible;
+  padding-left: 72px; /* space for icon foot that lands inside the badge */
+}
+
+.badge-icon-burst {
+  position: absolute;
+  /* Anchor bottom of icon ~20px above badge top edge so it "sits on" the badge */
+  bottom: calc(100% - 32px);
+  left: 10px;
+  display: block;
+  pointer-events: none;
+  /* Slight rotation for that sticker-escaping effect */
+  transform: rotate(-4deg);
+  transform-origin: bottom left;
+  filter: drop-shadow(4px 4px 0 rgba(13,13,13,0.22));
+  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.section-badge.badge-with-icon:hover .badge-icon-burst {
+  transform: rotate(-1deg) scale(1.05);
+}
+
+.badge-icon-burst svg {
+  display: block;
+}
+
 .badge-icon {
   font-size: 0.9rem;
   display: inline-flex;
@@ -874,7 +908,8 @@ footer {
   box-shadow: 8px 8px 0 var(--coral);
   margin-bottom: 48px;
   position: relative;
-  overflow: hidden;
+  /* overflow must stay visible for the bursting icon; decorative ::before circle is still fine */
+  overflow: visible;
 }
 
 .theme-search .post-header::before {
