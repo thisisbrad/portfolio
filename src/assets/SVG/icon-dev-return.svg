@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" width="120" height="140">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&amp;display=swap');
+
+      .icon-label {
+        font-family: 'Bricolage Grotesque', 'Arial Black', sans-serif;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        fill: #0d0d0d;
+      }
+
+      /* Cyan square entrance */
+      .bg-sq {
+        transform-origin: 60px 60px;
+        animation: popIn 0.45s cubic-bezier(0.34,1.4,0.64,1) both;
+      }
+      @keyframes popIn {
+        from { transform: scale(0.6); opacity: 0; }
+        to   { transform: scale(1);   opacity: 1; }
+      }
+
+      /* Progress pips fill left-to-right */
+      .pip { opacity: 0; animation: pipIn 0.2s ease forwards; }
+      .pip1 { animation-delay: 0.3s; }
+      .pip2 { animation-delay: 0.45s; }
+      .pip3 { animation-delay: 0.6s; }
+      .pip4 { animation-delay: 0.75s; opacity: 0.2; animation: pipInFade 0.2s 0.75s ease forwards; }
+      @keyframes pipIn     { to { opacity: 1; } }
+      @keyframes pipInFade { to { opacity: 0.2; } }
+
+      /* Bold chevron slides in from left */
+      .chev-1 {
+        stroke-dasharray: 80;
+        stroke-dashoffset: 80;
+        animation: drawChev 0.45s 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+      }
+      .chev-2 {
+        stroke-dasharray: 80;
+        stroke-dashoffset: 80;
+        animation: drawChev 0.45s 0.65s cubic-bezier(0.4,0,0.2,1) forwards;
+      }
+      @keyframes drawChev {
+        to { stroke-dashoffset: 0; }
+      }
+
+      /* Purple dot bounces in */
+      .pdot {
+        transform-origin: 28px 88px;
+        animation: bounceIn 0.5s 0.75s cubic-bezier(0.34,1.8,0.64,1) both;
+      }
+      @keyframes bounceIn {
+        from { transform: scale(0); opacity: 0; }
+        to   { transform: scale(1); opacity: 1; }
+      }
+
+      /* Hover: chevrons march — continuous nudge right */
+      .icon-group { cursor: pointer; }
+      .icon-group:hover .chev-1 {
+        animation: march 0.6s ease infinite;
+      }
+      .icon-group:hover .chev-2 {
+        animation: march 0.6s 0.15s ease infinite;
+      }
+      @keyframes march {
+        0%   { transform: translateX(0);   opacity: 1; }
+        60%  { transform: translateX(6px); opacity: 0.5; }
+        61%  { transform: translateX(-4px); opacity: 0; }
+        62%  { transform: translateX(-4px); opacity: 0; }
+        100% { transform: translateX(0);   opacity: 1; }
+      }
+
+      /* Hover: active pip flashes */
+      .icon-group:hover .pip3 {
+        animation: flash 0.5s ease infinite;
+      }
+      @keyframes flash {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.3; }
+      }
+
+      .label-wrap {
+        animation: fadeUp 0.4s 0.9s ease both;
+      }
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(6px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+  </defs>
+
+  <g class="icon-group">
+
+    <!-- Drop shadow -->
+    <rect x="26" y="26" width="80" height="80" fill="#0d0d0d" opacity="0.18"/>
+
+    <!-- Cyan background square -->
+    <rect class="bg-sq" x="20" y="20" width="80" height="80" fill="#00E5FF" stroke="#0d0d0d" stroke-width="3"/>
+
+    <!-- Progress pips row -->
+    <rect class="pip pip1" x="26" y="27" width="13" height="9" fill="#0d0d0d"/>
+    <rect class="pip pip2" x="43" y="27" width="13" height="9" fill="#0d0d0d"/>
+    <rect class="pip pip3" x="60" y="27" width="13" height="9" fill="#0d0d0d"/>
+    <rect class="pip pip4" x="77" y="27" width="13" height="9" fill="#0d0d0d"/>
+
+    <!-- Bold chevron 1 -->
+    <polyline class="chev-1"
+      points="26,72 60,42 94,72"
+      fill="none" stroke="#0d0d0d" stroke-width="8"
+      stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Ghost chevron 2 below -->
+    <polyline class="chev-2"
+      points="26,84 60,56 94,84"
+      fill="none" stroke="#0d0d0d" stroke-width="3.5"
+      stroke-linecap="round" stroke-linejoin="round"
+      opacity="0.28"/>
+
+    <!-- Purple dot accent -->
+    <circle class="pdot" cx="28" cy="88" r="6" fill="#C653FF" stroke="#0d0d0d" stroke-width="2"/>
+
+    <!-- Label -->
+    <g class="label-wrap">
+      <text x="60" y="125" text-anchor="middle" class="icon-label">Dev Return</text>
+    </g>
+
+  </g>
+</svg>

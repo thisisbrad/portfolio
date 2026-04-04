@@ -576,11 +576,15 @@ nav {
 
 .post-card .post-meta {
   display: flex;
-  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 500;
-  color: rgba(13, 13, 13, 0.55);
+  color: #555;
+  border-top: 2px solid var(--black);
+  padding-top: 10px;
+  margin-top: 4px;
 }
 
 /* Featured card: full-width grid layout */
@@ -692,6 +696,12 @@ footer {
   color: var(--black);
 }
 
+.footer-tagline {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+  color: #444;
+}
+
 .footer-dots {
   display: flex;
   gap: 8px;
@@ -699,10 +709,10 @@ footer {
 }
 
 .footer-dot {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  border: 2px solid var(--black);
+  border: 2.5px solid var(--black);
   display: inline-block;
 }
 
@@ -720,20 +730,16 @@ footer {
 
 .footer-links a {
   font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: 0.8rem;
+  font-weight: 700;
+  font-size: 0.75rem;
   text-decoration: none;
   color: var(--black);
-  padding: 4px 12px;
-  border: 2px solid var(--black);
-  border-radius: 999px;
-  transition: background 0.1s, transform 0.1s, box-shadow 0.1s;
+  border-bottom: 2px solid var(--black);
+  transition: opacity 0.1s;
 }
 
 .footer-links a:hover {
-  background: var(--yellow);
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 var(--black);
+  opacity: 0.6;
 }
 
 /* ============================================================

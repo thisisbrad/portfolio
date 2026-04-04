@@ -44,13 +44,23 @@ void logNumber;
 void seriesEntry;
 ---
 
-<a class={`post-card ${color}${featured ? ' featured' : ''}`} href={`/posts/${post.slug}`}>
-  {featured && (
+{featured ? (
+  <a class={`post-card ${color} featured`} href={`/posts/${post.slug}`}>
     <div class="featured-geo">
       {type === 'build-log' ? '{ }' : type === 'the-search' ? '?' : '\u2694'}
     </div>
-  )}
-  <div class={featured ? 'post-content' : ''}>
+    <div class="post-content">
+      <span class={`post-pill ${pillClass}`}>{pillLabel}</span>
+      <h2>{title}</h2>
+      <p>{excerpt}</p>
+      <div class="post-meta">
+        <span>{formattedDate}</span>
+        <span>{readTime}</span>
+      </div>
+    </div>
+  </a>
+) : (
+  <a class={`post-card ${color}`} href={`/posts/${post.slug}`}>
     <span class={`post-pill ${pillClass}`}>{pillLabel}</span>
     <h2>{title}</h2>
     <p>{excerpt}</p>
@@ -58,5 +68,5 @@ void seriesEntry;
       <span>{formattedDate}</span>
       <span>{readTime}</span>
     </div>
-  </div>
-</a>
+  </a>
+)}
