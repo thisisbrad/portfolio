@@ -837,6 +837,14 @@ footer {
 
 .badge-icon {
   font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.badge-icon svg {
+  display: block;
+  flex-shrink: 0;
 }
 
 /* ---- Build Log Header ------------------------------------- */

@@ -19,7 +19,13 @@ const formattedDate = date.toLocaleDateString('en-US', {
     {logNumber && <span class="buildlog-number">{String(logNumber).padStart(2, '0')}</span>}
     <div>
       <div class="section-badge">
-        <span class="badge-icon">&#x1FAB5;</span> Build Log
+        <span class="badge-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" width="18" height="18" aria-hidden="true" focusable="false">
+            <rect x="1" y="1" width="16" height="16" fill="#ffe600" stroke="#0d0d0d" stroke-width="1.5"/>
+            <polyline points="1,11 4,8 7,11 10,8 13,11 17,7" fill="none" stroke="#0d0d0d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="11" y="11" width="5" height="5" fill="#0d0d0d"/>
+          </svg>
+        </span> Build Log
       </div>
     </div>
   </div>
