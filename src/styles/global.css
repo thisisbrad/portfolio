@@ -962,6 +962,14 @@ footer {
 .theme-devreturn .post-header {
   border-left: 8px solid var(--cyan);
   padding-left: 28px;
+  position: relative;
+  overflow: visible;
+}
+
+.theme-devreturn .badge-icon-burst {
+  bottom: auto;
+  top: 20px;
+  left: -230px;
 }
 
 .devreturn-series {
