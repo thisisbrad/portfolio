@@ -1623,3 +1623,59 @@ pre.astro-code span {
     padding: 4px 10px;
   }
 }
+
+/* ---- Responsive Hero Icons -------------------------------- */
+.badge-icon-burst svg {
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+/* Tablet: scale to 160px, pull positions in proportionally */
+@media (max-width: 1100px) {
+  .badge-icon-burst svg {
+    width: 160px;
+    height: 160px;
+  }
+
+  .theme-hardwon .badge-icon-burst,
+  .theme-devreturn .badge-icon-burst {
+    left: -155px;
+  }
+
+  .theme-buildlog .badge-icon-burst {
+    right: -155px;
+  }
+
+  .theme-search .badge-icon-burst {
+    left: -80px;
+  }
+}
+
+/* Mobile: scale to 80px, tuck into top corner of the header */
+@media (max-width: 640px) {
+  .badge-icon-burst svg {
+    width: 80px;
+    height: 80px;
+  }
+
+  /* Left-side icons → top-left corner, just outside header edge */
+  .theme-hardwon .badge-icon-burst,
+  .theme-devreturn .badge-icon-burst {
+    top: -20px;
+    left: -20px;
+  }
+
+  /* Right-side icon → top-right corner */
+  .theme-buildlog .badge-icon-burst {
+    top: -20px;
+    right: -20px;
+    left: auto;
+  }
+
+  /* Search: reset to top-right corner (was relative to badge) */
+  .theme-search .badge-icon-burst {
+    bottom: auto;
+    top: -20px;
+    left: auto;
+    right: -20px;
+  }
+}
