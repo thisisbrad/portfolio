@@ -4,13 +4,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import profileImg from '../assets/img/AI-Profile-Picture.png';
 
-// Fetch and sort all posts by date descending
 const allPosts = await getCollection('posts');
 const posts = allPosts.sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
 
-// Show up to 5 most recent posts; first one is featured
 const displayPosts = posts.slice(0, 5);
 const [featuredPost, ...restPosts] = displayPosts;
 
@@ -25,6 +23,33 @@ const stackItems = [
   'Prisma',
   'Astro',
 ];
+
+const projects = [
+  {
+    name: 'THISISBRAD.DEV',
+    description: 'This portfolio/blog. Astro, MDX, and a hand-rolled Memphis design system.',
+    tech: ['Astro', 'MDX', 'CSS'],
+    accent: 'yellow',
+    href: '#',
+    linkLabel: 'View Project →',
+  },
+  {
+    name: 'TaskFlow API',
+    description: 'Production REST API for task management. Typed end-to-end, fully documented.',
+    tech: ['Node.js', 'Express', 'PostgreSQL', 'Prisma'],
+    accent: 'cyan',
+    href: '#',
+    linkLabel: 'GitHub →',
+  },
+  {
+    name: 'React Component Lab',
+    description: 'Open-source UI component library. Accessible, composable, well-tested.',
+    tech: ['React', 'TypeScript', 'Storybook'],
+    accent: 'coral',
+    href: '#',
+    linkLabel: 'GitHub →',
+  },
+];
 ---
 
 <BaseLayout title="BRAD.DEV — Building real things, writing it all down." activeLink="writing">
@@ -32,6 +57,12 @@ const stackItems = [
 
     <!-- Hero -->
     <section class="hero">
+      <!-- Geometric decorative accents (CSS only, no images) -->
+      <div class="hero-geo hero-geo-circle" aria-hidden="true"></div>
+      <div class="hero-geo hero-geo-square" aria-hidden="true"></div>
+      <div class="hero-geo hero-geo-triangle" aria-hidden="true"></div>
+      <div class="hero-geo hero-geo-ring" aria-hidden="true"></div>
+
       <div class="hero-image-clip">
         <img class="hero-profile" src={profileImg.src} alt="" aria-hidden="true" />
       </div>
@@ -56,7 +87,7 @@ const stackItems = [
     </section>
 
     <!-- Stack Section -->
-    <section class="stack-section scroll-reveal">
+    <section class="stack-section scroll-reveal" data-reveal="up">
       <div class="stack-copy">
         <span class="section-label">// Stack</span>
         <h2 class="stack-heading">Tools I reach<br />for first.</h2>
@@ -65,17 +96,46 @@ const stackItems = [
           resume-padded.
         </p>
       </div>
-      <div class="stack-pills">
+      <div class="stack-pills" data-stagger>
         {stackItems.map(item => (
           <span class="stack-pill">{item}</span>
         ))}
       </div>
     </section>
 
-    <!-- Posts -->
-    <section>
-      <span class="section-label">// Latest Posts</span>
+    <!-- Section Divider -->
+    <hr class="section-divider" aria-hidden="true" />
 
+    <!-- Projects Section -->
+    <section class="projects-section scroll-reveal" data-reveal="up">
+      <span class="section-label">// Projects</span>
+      <div class="projects-grid" data-stagger>
+        {projects.map(project => (
+          <div class={`project-card project-card--${project.accent}`}>
+            <div class={`project-geo-accent project-geo-accent--${project.accent}`} aria-hidden="true"></div>
+            <div class="project-card-inner">
+              <h3 class="project-name">{project.name}</h3>
+              <p class="project-desc">{project.description}</p>
+              <div class="project-tech">
+                {project.tech.map(tag => (
+                  <span class="tech-pill">{tag}</span>
+                ))}
+              </div>
+              <a href={project.href} class={`project-link project-link--${project.accent}`}>
+                {project.linkLabel}
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Section Divider -->
+    <hr class="section-divider" aria-hidden="true" />
+
+    <!-- Posts -->
+    <section class="scroll-reveal" data-reveal="up">
+      <span class="section-label">// Latest Posts</span>
       <div class="posts-grid">
         {featuredPost && (
           <PostCard post={featuredPost} featured={true} />
@@ -91,25 +151,415 @@ const stackItems = [
 
 <script>
   document.addEventListener('astro:page-load', () => {
-    const revealEls = document.querySelectorAll('.scroll-reveal');
+    // --- Stagger children setup ---
+    // Elements with data-stagger: each direct child gets a CSS --delay custom prop
+    // so the scroll-reveal transition can be staggered.
+    const STAGGER_MS = 80;
+    document.querySelectorAll('[data-stagger]').forEach((container) => {
+      Array.from(container.children).forEach((child, i) => {
+        (child as HTMLElement).style.setProperty('--delay', `${i * STAGGER_MS}ms`);
+        child.classList.add('stagger-child');
+      });
+    });
+
+    // --- Direction variants ---
+    // data-reveal="up" (default), "left", "right"
+    // We set initial transforms via JS so the CSS transition picks them up cleanly.
+    // The <style> block handles .scroll-reveal[data-reveal="left|right"] initial states.
+
+    const revealEls = document.querySelectorAll<HTMLElement>('.scroll-reveal');
+
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              entry.target.classList.add('is-visible');
-              observer.unobserve(entry.target);
+              const el = entry.target as HTMLElement;
+              el.classList.add('is-visible');
+
+              // Stagger children visibility
+              const staggerContainer = el.querySelector('[data-stagger]') ?? (el.hasAttribute('data-stagger') ? el : null);
+              if (staggerContainer) {
+                Array.from(staggerContainer.children).forEach((child) => {
+                  const delay = parseInt((child as HTMLElement).style.getPropertyValue('--delay') || '0', 10);
+                  setTimeout(() => {
+                    child.classList.add('is-visible');
+                  }, delay);
+                });
+              }
+
+              observer.unobserve(el);
             }
           });
         },
-        { threshold: 0.15 }
+        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
       );
+
       revealEls.forEach((el) => {
         el.classList.remove('is-visible');
         observer.observe(el);
       });
     } else {
-      revealEls.forEach((el) => el.classList.add('is-visible'));
+      // Fallback: show everything immediately
+      revealEls.forEach((el) => {
+        el.classList.add('is-visible');
+        const staggerContainer = el.querySelector('[data-stagger]') ?? (el.hasAttribute('data-stagger') ? el : null);
+        if (staggerContainer) {
+          Array.from(staggerContainer.children).forEach((child) => child.classList.add('is-visible'));
+        }
+      });
     }
   });
 </script>
+
+<style>
+  /* =============================================================
+     SCROLL REVEAL — Direction Variants
+     Extends global.css .scroll-reveal without overriding it.
+  ============================================================= */
+
+  /* Left: slide in from the left */
+  .scroll-reveal[data-reveal="left"] {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+  .scroll-reveal[data-reveal="left"].is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Right: slide in from the right */
+  .scroll-reveal[data-reveal="right"] {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+  .scroll-reveal[data-reveal="right"].is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Staggered children — each child animates on its own delay */
+  .stagger-child {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+    transition:
+      opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms),
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms);
+  }
+  .stagger-child.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-reveal[data-reveal="left"],
+    .scroll-reveal[data-reveal="right"] {
+      transform: none;
+    }
+    .stagger-child {
+      transform: none;
+      transition: opacity 0.3s ease var(--delay, 0ms);
+    }
+  }
+
+  /* =============================================================
+     HERO — Memphis Geometric Accents
+  ============================================================= */
+
+  /* All geo shapes share base positioning rules */
+  .hero-geo {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Large circle outline — top-left area */
+  .hero-geo-circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 6px solid var(--yellow);
+    top: -20px;
+    left: -30px;
+    opacity: 0.55;
+    animation: geoFloat 12s ease-in-out infinite;
+  }
+
+  /* Small filled square — rotated, mid-left */
+  .hero-geo-square {
+    width: 28px;
+    height: 28px;
+    background: var(--coral);
+    top: 60%;
+    left: 12%;
+    opacity: 0.7;
+    animation: geoRotate 10s linear infinite;
+  }
+
+  /* Triangle — bottom-right of hero area */
+  .hero-geo-triangle {
+    width: 0;
+    height: 0;
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
+    border-bottom: 38px solid var(--green);
+    bottom: 14%;
+    left: 34%;
+    opacity: 0.5;
+    animation: geoDrift 14s ease-in-out infinite;
+  }
+
+  /* Thin ring — tucked behind text block */
+  .hero-geo-ring {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 10px solid var(--purple);
+    top: 30%;
+    left: 48%;
+    opacity: 0.25;
+    animation: geoFloat 9s ease-in-out infinite reverse;
+  }
+
+  @keyframes geoFloat {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-14px); }
+  }
+
+  @keyframes geoRotate {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes geoDrift {
+    0%, 100% { transform: translateX(0px) rotate(0deg); }
+    33%       { transform: translateX(10px) rotate(8deg); }
+    66%       { transform: translateX(-6px) rotate(-5deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-geo { animation: none !important; }
+  }
+
+  /* =============================================================
+     SECTION DIVIDER — Memphis-styled horizontal rule
+  ============================================================= */
+
+  .section-divider {
+    border: none;
+    height: 10px;
+    margin: 48px 0;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        var(--black) 0px,
+        var(--black) 12px,
+        var(--yellow) 12px,
+        var(--yellow) 22px,
+        var(--black) 22px,
+        var(--black) 24px,
+        var(--cyan) 24px,
+        var(--cyan) 34px,
+        var(--black) 34px,
+        var(--black) 36px,
+        var(--coral) 36px,
+        var(--coral) 46px,
+        var(--black) 46px,
+        var(--black) 48px,
+        var(--green) 48px,
+        var(--green) 58px,
+        var(--black) 58px,
+        var(--black) 60px,
+        var(--purple) 60px,
+        var(--purple) 70px,
+        var(--black) 70px,
+        var(--black) 72px
+      );
+    border-top: 3px solid var(--black);
+    border-bottom: 3px solid var(--black);
+  }
+
+  /* =============================================================
+     PROJECTS SECTION
+  ============================================================= */
+
+  .projects-section {
+    margin-bottom: 0;
+  }
+
+  .projects-section > .section-label {
+    display: block;
+    margin-bottom: 24px;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  /* --- Project Card --- */
+  .project-card {
+    border: 3px solid var(--black);
+    background: var(--white);
+    box-shadow: 6px 6px 0 var(--black);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.13s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.13s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0 var(--black);
+  }
+
+  /* Top color stripe matching PostCard pattern */
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+  }
+  .project-card--yellow::before { background: var(--yellow); }
+  .project-card--cyan::before   { background: var(--cyan); }
+  .project-card--coral::before  { background: var(--coral); }
+  .project-card--green::before  { background: var(--green); }
+  .project-card--purple::before { background: var(--purple); }
+  .project-card--orange::before { background: var(--orange); }
+
+  /* Geometric accent shape in corner */
+  .project-geo-accent {
+    position: absolute;
+    bottom: -16px;
+    right: -16px;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .project-geo-accent--yellow { background: var(--yellow); }
+  .project-geo-accent--cyan   { background: var(--cyan); }
+  .project-geo-accent--coral  { background: var(--coral); }
+  .project-geo-accent--green  { background: var(--green); }
+  .project-geo-accent--purple { background: var(--purple); }
+  .project-geo-accent--orange { background: var(--orange); }
+
+  /* Inner content — sits above the geo accent */
+  .project-card-inner {
+    padding: 22px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Offset for top stripe */
+  .project-card-inner {
+    padding-top: 22px;
+    margin-top: 8px;
+  }
+
+  .project-name {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    font-size: 1.05rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--black);
+  }
+
+  .project-desc {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(13, 13, 13, 0.72);
+    flex: 1;
+  }
+
+  /* Tech tag pills */
+  .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tech-pill {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    border: 2px solid var(--black);
+    background: var(--black);
+    color: var(--white);
+  }
+
+  /* Project link button */
+  .project-link {
+    display: inline-block;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 7px 14px;
+    border: 2.5px solid var(--black);
+    box-shadow: 3px 3px 0 var(--black);
+    color: var(--black);
+    background: var(--white);
+    align-self: flex-start;
+    margin-top: 4px;
+    transition: transform 0.1s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.1s cubic-bezier(0.22, 1, 0.36, 1),
+                background 0.1s;
+  }
+
+  .project-link:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--black);
+  }
+
+  .project-link--yellow:hover { background: var(--yellow); }
+  .project-link--cyan:hover   { background: var(--cyan); }
+  .project-link--coral:hover  { background: var(--coral); color: var(--white); }
+  .project-link--green:hover  { background: var(--green); }
+  .project-link--purple:hover { background: var(--purple); color: var(--white); }
+  .project-link--orange:hover { background: var(--orange); color: var(--white); }
+
+  /* =============================================================
+     RESPONSIVE — Mobile
+  ============================================================= */
+
+  @media (max-width: 720px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    /* Geo shapes clip down so they don't crowd mobile layout */
+    .hero-geo-circle {
+      width: 100px;
+      height: 100px;
+      left: -20px;
+    }
+    .hero-geo-ring {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-geo {
+      display: none;
+    }
+  }
+</style>
