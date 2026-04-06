@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <style>
+      .bg-sq {
+        transform-origin: 50px 50px;
+        animation: squareIn 0.45s cubic-bezier(0.34,1.4,0.64,1) both;
+      }
+      @keyframes squareIn {
+        from { transform: scale(0.5); opacity: 0; }
+        to   { transform: scale(1); opacity: 1; }
+      }
+      .ring-1 {
+        transform-origin: 50px 50px;
+        animation: ringExpand 0.5s 0.15s cubic-bezier(0.34,1.4,0.64,1) both;
+      }
+      .ring-2 {
+        transform-origin: 50px 50px;
+        animation: ringExpand 0.5s 0.28s cubic-bezier(0.34,1.4,0.64,1) both;
+      }
+      .ring-3 {
+        transform-origin: 50px 50px;
+        animation: ringExpand 0.5s 0.4s cubic-bezier(0.34,1.4,0.64,1) both;
+      }
+      .center-dot {
+        transform-origin: 50px 50px;
+        animation: ringExpand 0.4s 0.52s cubic-bezier(0.34,1.8,0.64,1) both;
+      }
+      @keyframes ringExpand {
+        from { transform: scale(0); opacity: 0; }
+        to   { transform: scale(1); opacity: 1; }
+      }
+      .orbit {
+        transform-origin: 50px 50px;
+        stroke-dasharray: 6 10;
+        opacity: 0;
+        animation: orbitIn 0.4s 0.8s ease forwards, spin 5s 1.2s linear infinite;
+      }
+      @keyframes orbitIn { to { opacity: 0.4; } }
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+      .ch {
+        stroke-dasharray: 12;
+        stroke-dashoffset: 12;
+        animation: drawCH 0.3s ease forwards;
+      }
+      .ch1 { animation-delay: 0.58s; }
+      .ch2 { animation-delay: 0.64s; }
+      .ch3 { animation-delay: 0.70s; }
+      .ch4 { animation-delay: 0.76s; }
+      @keyframes drawCH { to { stroke-dashoffset: 0; } }
+      .icon-group { cursor: pointer; }
+      .icon-group:hover .orbit { animation: spin 1.5s linear infinite; opacity: 0.65; }
+    </style>
+  </defs>
+
+  <g class="icon-group">
+    <rect x="6" y="6" width="88" height="88" fill="#FF4D6A" opacity="0.22"/>
+    <rect class="bg-sq" x="0" y="0" width="100" height="100" fill="#0d0d0d" stroke="#FF4D6A" stroke-width="3"/>
+    <circle class="ring-1" cx="50" cy="50" r="34" fill="#FF4D6A"/>
+    <circle class="ring-2" cx="50" cy="50" r="22" fill="none" stroke="#0d0d0d" stroke-width="5"/>
+    <circle class="ring-3" cx="50" cy="50" r="11" fill="#0d0d0d"/>
+    <circle class="center-dot" cx="50" cy="50" r="5" fill="#FF4D6A"/>
+    <circle class="orbit" cx="50" cy="50" r="42" fill="none" stroke="#FF4D6A" stroke-width="1.5"/>
+    <line class="ch ch1" x1="50" y1="4"  x2="50" y2="14" stroke="#f5f0e8" stroke-width="3" stroke-linecap="round"/>
+    <line class="ch ch2" x1="50" y1="86" x2="50" y2="96" stroke="#f5f0e8" stroke-width="3" stroke-linecap="round"/>
+    <line class="ch ch3" x1="4"  y1="50" x2="14" y2="50" stroke="#f5f0e8" stroke-width="3" stroke-linecap="round"/>
+    <line class="ch ch4" x1="86" y1="50" x2="96" y2="50" stroke="#f5f0e8" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>
