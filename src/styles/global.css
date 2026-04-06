@@ -74,21 +74,109 @@ body::before {
 }
 
 /* ---- Memphis Stripe Divider -------------------------------- */
+/*
+ * Ettore Sottsass / Memphis Group aesthetic:
+ * Seven adjacent pattern bands — each a distinct geometric texture
+ * (diagonal stripes, polka dots, checkerboard) — separated by thick
+ * black borders. The total composition reads as a printed block.
+ */
 .memphis-stripe {
-  height: 14px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--yellow)  0px,   var(--yellow)  24px,
-    var(--coral)   24px,  var(--coral)   48px,
-    var(--cyan)    48px,  var(--cyan)    72px,
-    var(--green)   72px,  var(--green)   96px,
-    var(--purple)  96px,  var(--purple)  120px,
-    var(--orange)  120px, var(--orange)  144px
-  );
+  display: flex;
+  height: 44px;
   border-top: 3px solid var(--black);
   border-bottom: 3px solid var(--black);
   position: relative;
   z-index: 10;
+  overflow: hidden;
+}
+
+/* Shared band rules */
+.ms-band {
+  flex: 1;
+  height: 100%;
+  border-right: 3px solid var(--black);
+}
+.ms-band:last-child {
+  border-right: none;
+}
+
+/* Band 1 & 7 — diagonal stripes, yellow / black, 45° */
+.ms-band--diag-yellow {
+  background-color: var(--yellow);
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--black) 0px,
+    var(--black) 4px,
+    transparent 4px,
+    transparent 14px
+  );
+}
+
+/* Band 1 reversed — 135° mirror for end symmetry */
+.ms-band--diag-yellow.ms-band--reverse {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--black) 0px,
+    var(--black) 4px,
+    transparent 4px,
+    transparent 14px
+  );
+}
+
+/* Band 2 — polka dots, coral base */
+.ms-band--dots-coral {
+  background-color: var(--coral);
+  background-image: radial-gradient(
+    circle,
+    var(--black) 2.5px,
+    transparent 2.5px
+  );
+  background-size: 10px 10px;
+}
+
+/* Band 3 — checkerboard, cyan / black */
+.ms-band--check-cyan {
+  background-image:
+    repeating-conic-gradient(
+      var(--cyan) 0% 25%,
+      var(--black) 0% 50%
+    );
+  background-size: 16px 16px;
+}
+
+/* Band 4 — thick diagonal stripes, orange / black, 45° */
+.ms-band--diag-orange {
+  background-color: var(--orange);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--black) 0px,
+    var(--black) 5px,
+    transparent 5px,
+    transparent 16px
+  );
+}
+
+/* Band 5 — dense polka dots, purple base */
+.ms-band--dots-purple {
+  background-color: var(--purple);
+  background-image: radial-gradient(
+    circle,
+    var(--black) 3px,
+    transparent 3px
+  );
+  background-size: 12px 12px;
+  background-position: 0 0;
+}
+
+/* Band 6 — checkerboard, green / black */
+.ms-band--check-green {
+  background-color: var(--green);
+  background-image:
+    repeating-conic-gradient(
+      var(--black) 0% 25%,
+      var(--green) 0% 50%
+    );
+  background-size: 16px 16px;
 }
 
 /* ---- Background Decorative Shapes ------------------------- */
