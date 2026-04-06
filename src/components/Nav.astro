@@ -1,19 +1,573 @@
 ---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
 interface Props {
   activeLink?: 'writing' | 'projects' | 'stack' | 'about';
   wide?: boolean;
 }
 const { activeLink, wide = false } = Astro.props;
+
+type PostType = 'build-log' | 'the-search' | 'dev-return' | 'hard-won';
+
+const allPosts = await getCollection('posts');
+const sorted = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const recentByType: Record<PostType, CollectionEntry<'posts'>[]> = {
+  'build-log':  sorted.filter(p => p.data.type === 'build-log').slice(0, 2),
+  'the-search': sorted.filter(p => p.data.type === 'the-search').slice(0, 2),
+  'dev-return': sorted.filter(p => p.data.type === 'dev-return').slice(0, 2),
+  'hard-won':   sorted.filter(p => p.data.type === 'hard-won').slice(0, 2),
+};
+
+const writingTypes: Array<{
+  key: PostType;
+  label: string;
+  color: string;
+  dark: string;
+  symbol: string;
+  tagline: string;
+  href: string;
+}> = [
+  { key: 'build-log',  label: 'Build Log',  color: '#ffe600', dark: '#0d0d0d', symbol: '#',  tagline: 'The work, step by step.',    href: '/writing/build-log' },
+  { key: 'the-search', label: 'The Search', color: '#ff4d6a', dark: '#f5f0e8', symbol: '◉',  tagline: 'Job hunting, raw and real.', href: '/writing/the-search' },
+  { key: 'dev-return', label: 'Dev Return', color: '#00e5ff', dark: '#0d0d0d', symbol: '↺',  tagline: 'Coming back to the craft.',  href: '/writing/dev-return' },
+  { key: 'hard-won',   label: 'Hard Won',   color: '#ff7a00', dark: '#0d0d0d', symbol: '✦',  tagline: 'Lessons the hard way.',      href: '/writing/hard-won' },
+];
+
+const projectTypes = [
+  { label: 'Side Projects', href: '/projects/side' },
+  { label: 'Open Source',   href: '/projects/open-source' },
+  { label: 'Experiments',   href: '/projects/experiments' },
+];
 ---
+
 <nav>
   <div class={`nav-inner${wide ? ' nav-inner--wide' : ''}`}>
     <a class="nav-logo" href="/">THISISBRAD.DEV</a>
+
     <ul class="nav-links">
-      <li><a href="/" class={activeLink === 'writing' ? 'active' : ''}>Writing</a></li>
-      <li><a href="/projects" class={activeLink === 'projects' ? 'active' : ''}>Projects</a></li>
-      <li><a href="/stack" class={activeLink === 'stack' ? 'active' : ''}>Stack</a></li>
-      <li><a href="/about" class={activeLink === 'about' ? 'active' : ''}>About</a></li>
-      <li><a href="/rss.xml">RSS</a></li>
+
+      <!-- Writing — mega menu -->
+      <li class="nav-item has-mega">
+        <a
+          href="/"
+          class={`nav-trigger${activeLink === 'writing' ? ' active' : ''}`}
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Writing <span class="nav-chevron">▾</span>
+        </a>
+
+        <div class="mega-panel" role="region" aria-label="Writing categories">
+          <div class="mega-inner">
+            {writingTypes.map((type) => (
+              <div
+                class="mega-col"
+                style={`--col-accent:${type.color};--col-dark:${type.dark}`}
+              >
+                <a class="mega-col-head" href={type.href}>
+                  <span class="mega-symbol">{type.symbol}</span>
+                  <span class="mega-type-name">{type.label}</span>
+                </a>
+                <p class="mega-tagline">{type.tagline}</p>
+
+                {recentByType[type.key].length > 0 && (
+                  <ul class="mega-posts">
+                    {recentByType[type.key].map(post => (
+                      <li>
+                        <a href={`/posts/${post.slug}`} class="mega-post-link">
+                          <span class="mega-post-arrow">›</span>
+                          <span>{post.data.title}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                <a href={type.href} class="mega-all-link">
+                  All {type.label} →
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </li>
+
+      <!-- Projects — simple dropdown -->
+      <li class="nav-item has-dropdown">
+        <a
+          href="/projects"
+          class={`nav-trigger${activeLink === 'projects' ? ' active' : ''}`}
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Projects <span class="nav-chevron">▾</span>
+        </a>
+
+        <div class="dropdown-panel" role="region" aria-label="Project categories">
+          <ul class="dropdown-list">
+            {projectTypes.map(pt => (
+              <li>
+                <a href={pt.href} class="dropdown-link">
+                  <span class="dropdown-bullet">›</span> {pt.label}
+                </a>
+              </li>
+            ))}
+            <li class="dropdown-sep"></li>
+            <li>
+              <a href="/projects" class="dropdown-link dropdown-link--all">
+                All Projects →
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- Plain links -->
+      <li>
+        <a href="/stack" class={activeLink === 'stack' ? 'active' : ''}>Stack</a>
+      </li>
+      <li>
+        <a href="/about" class={activeLink === 'about' ? 'active' : ''}>About</a>
+      </li>
+      <li>
+        <a href="/rss.xml">RSS</a>
+      </li>
+
     </ul>
   </div>
 </nav>
+
+<style>
+/* ----------------------------------------------------------------
+   RESET — global .nav-links a styles bleed into panels; undo them
+   ---------------------------------------------------------------- */
+.mega-panel a,
+.dropdown-panel a {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  transform: none;
+  color: var(--black);
+  display: flex;
+  cursor: crosshair;
+}
+
+.mega-panel a:hover,
+.dropdown-panel a:hover {
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+  color: var(--black);
+}
+
+/* ----------------------------------------------------------------
+   NAV ITEM — shared wrapper
+   ---------------------------------------------------------------- */
+.nav-item {
+  list-style: none;
+}
+
+/* The trigger links (Writing, Projects) inherit .nav-links a styling
+   from global.css; we only need to handle the chevron and open states. */
+.nav-trigger {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 5px;
+}
+
+.nav-chevron {
+  font-size: 0.55rem;
+  line-height: 1;
+  transition: transform 0.18s ease;
+  display: inline-block;
+}
+
+.has-mega.is-open .nav-chevron,
+.has-dropdown.is-open .nav-chevron {
+  transform: rotate(180deg);
+}
+
+/* ----------------------------------------------------------------
+   MEGA PANEL — full nav-width writing menu
+   ---------------------------------------------------------------- */
+.mega-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background: var(--white);
+  border-left: 4px solid var(--black);
+  border-right: 4px solid var(--black);
+  border-bottom: 4px solid var(--black);
+  z-index: 200;
+
+  /* hidden */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0s linear 0.2s;
+  pointer-events: none;
+}
+
+.has-mega.is-open .mega-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0s linear 0s;
+  pointer-events: auto;
+}
+
+/* 4-column grid */
+.mega-inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Each column */
+.mega-col {
+  padding: 26px 22px 22px;
+  border-right: 3px solid var(--black);
+  border-top: 7px solid var(--col-accent);
+  display: flex;
+  flex-direction: column;
+  transition: background 0.15s;
+}
+
+.mega-col:last-child {
+  border-right: none;
+}
+
+.mega-col:hover {
+  background: color-mix(in srgb, var(--col-accent) 8%, var(--white));
+}
+
+/* Column header: symbol box + type name */
+.mega-col-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+
+.mega-col-head:hover .mega-symbol {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--black);
+}
+
+.mega-symbol {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: var(--col-accent);
+  color: var(--col-dark);
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--black);
+  box-shadow: 3px 3px 0 var(--black);
+  flex-shrink: 0;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+
+.mega-type-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--black);
+}
+
+.mega-tagline {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(13, 13, 13, 0.5);
+  margin-bottom: 14px;
+  padding-left: 58px; /* symbol(46) + gap(12) */
+  line-height: 1.4;
+}
+
+/* Recent posts */
+.mega-posts {
+  list-style: none;
+  border-top: 2px solid rgba(13, 13, 13, 0.1);
+  padding-top: 10px;
+  margin-bottom: 14px;
+  flex: 1;
+}
+
+.mega-post-link {
+  display: flex;
+  gap: 6px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--black);
+  padding: 5px 0;
+  border-bottom: 1.5px solid transparent;
+  transition: border-color 0.12s;
+  line-height: 1.35;
+  cursor: crosshair;
+}
+
+.mega-post-link:hover {
+  border-bottom: 1.5px solid var(--col-accent);
+}
+
+.mega-post-arrow {
+  color: var(--col-accent);
+  flex-shrink: 0;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+/* "All X →" footer link */
+.mega-all-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  color: var(--col-dark);
+  background: var(--col-accent);
+  padding: 5px 12px;
+  border: 2.5px solid var(--black);
+  box-shadow: 3px 3px 0 var(--black);
+  transition: transform 0.1s, box-shadow 0.1s;
+  cursor: crosshair;
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.mega-all-link:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--black);
+  background: var(--col-accent);
+  color: var(--col-dark);
+}
+
+/* ----------------------------------------------------------------
+   DROPDOWN PANEL — Projects
+   ---------------------------------------------------------------- */
+.has-dropdown {
+  position: relative;
+}
+
+.dropdown-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 210px;
+  background: var(--white);
+  border: 3px solid var(--black);
+  box-shadow: 6px 6px 0 var(--black);
+  z-index: 200;
+
+  /* hidden */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0s linear 0.15s;
+  pointer-events: none;
+}
+
+/* Invisible hover bridge — fills the gap between trigger and panel */
+.dropdown-panel::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 0;
+  right: 0;
+  height: 8px;
+}
+
+.has-dropdown.is-open .dropdown-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0s linear 0s;
+  pointer-events: auto;
+}
+
+.dropdown-list {
+  list-style: none;
+}
+
+.dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--black);
+  padding: 11px 16px;
+  border-bottom: 2px solid rgba(13, 13, 13, 0.15);
+  transition: background 0.12s;
+  cursor: crosshair;
+}
+
+.dropdown-list li:last-child .dropdown-link {
+  border-bottom: none;
+}
+
+.dropdown-link:hover {
+  background: var(--cyan);
+  color: var(--black);
+}
+
+.dropdown-bullet {
+  color: var(--yellow);
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.dropdown-sep {
+  height: 3px;
+  background: var(--black);
+}
+
+.dropdown-link--all {
+  font-style: italic;
+  background: var(--black);
+  color: var(--yellow);
+  border-bottom: none;
+}
+
+.dropdown-link--all:hover {
+  background: var(--black);
+  color: var(--cyan);
+}
+
+/* ----------------------------------------------------------------
+   Mobile — hide menus, show plain links
+   ---------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .mega-panel,
+  .dropdown-panel {
+    display: none;
+  }
+
+  .nav-chevron {
+    display: none;
+  }
+}
+</style>
+
+<script>
+  function initNav() {
+    const items = document.querySelectorAll<HTMLElement>('.has-mega, .has-dropdown');
+
+    items.forEach(item => {
+      const trigger = item.querySelector<HTMLAnchorElement>('.nav-trigger');
+      const panel   = item.querySelector<HTMLElement>('.mega-panel, .dropdown-panel');
+      if (!trigger) return;
+
+      let closeTimer: ReturnType<typeof setTimeout> | null = null;
+
+      function open() {
+        if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+        item.classList.add('is-open');
+        trigger!.setAttribute('aria-expanded', 'true');
+      }
+
+      function scheduleClose() {
+        if (item.classList.contains('is-pinned')) return;
+        if (closeTimer) clearTimeout(closeTimer);
+        closeTimer = setTimeout(() => {
+          item.classList.remove('is-open');
+          trigger!.setAttribute('aria-expanded', 'false');
+          closeTimer = null;
+        }, 180);
+      }
+
+      function closeNow() {
+        if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+        item.classList.remove('is-open', 'is-pinned');
+        trigger!.setAttribute('aria-expanded', 'false');
+      }
+
+      // --- Hover ---
+      // Open when mouse enters the trigger area
+      item.addEventListener('mouseenter', () => {
+        if (!item.classList.contains('is-pinned')) open();
+      });
+
+      // Start close timer when mouse leaves the li
+      item.addEventListener('mouseleave', scheduleClose);
+
+      // The panel is wider than the li button — mouse can exit the li's layout box
+      // before reaching the panel. Catch it arriving on the panel and cancel the timer.
+      if (panel) {
+        panel.addEventListener('mouseenter', () => {
+          if (!item.classList.contains('is-pinned')) open();
+        });
+        panel.addEventListener('mouseleave', scheduleClose);
+      }
+
+      // --- Click: pin open ---
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isPinned = item.classList.contains('is-pinned');
+
+        // Unpin + close all other items
+        items.forEach(other => {
+          if (other !== item) {
+            other.classList.remove('is-pinned', 'is-open');
+            other.querySelector('.nav-trigger')?.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        if (isPinned) {
+          closeNow();
+        } else {
+          item.classList.add('is-pinned');
+          open();
+        }
+      });
+
+      // --- Keyboard ---
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') { closeNow(); trigger!.focus(); }
+      });
+    });
+
+    // Click outside closes all
+    document.addEventListener('click', (e) => {
+      items.forEach(item => {
+        if (!item.contains(e.target as Node)) {
+          item.classList.remove('is-pinned', 'is-open');
+          item.querySelector('.nav-trigger')?.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+  }
+
+  // Runs on initial load and after View Transitions
+  document.addEventListener('astro:page-load', initNav);
+</script>
