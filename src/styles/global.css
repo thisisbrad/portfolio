@@ -916,6 +916,11 @@ footer {
   overflow: visible;
 }
 
+.theme-search .badge-icon-burst {
+  left: -134px;
+  transform: rotate(-14deg);
+}
+
 .theme-search .post-header::before {
   content: '';
   position: absolute;
