@@ -16,117 +16,77 @@ const formattedDate = date.toLocaleDateString('en-US', {
 <div class="post-header search-header">
   <div class="section-badge badge-with-icon">
     <span class="badge-icon-burst" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" width="240" height="280">
-        <defs>
-          <style>
-            .sr-label {
-              font-family: 'Bricolage Grotesque', 'Arial Black', sans-serif;
-              font-size: 11px;
-              font-weight: 800;
-              letter-spacing: 2px;
-              text-transform: uppercase;
-              fill: #f5f0e8;
-            }
-            .sr-bg-sq {
-              transform-origin: 60px 60px;
-              animation: srSquareIn 0.45s cubic-bezier(0.34,1.4,0.64,1) both;
-            }
-            @keyframes srSquareIn {
-              from { transform: scale(0.5); opacity: 0; }
-              to   { transform: scale(1);   opacity: 1; }
-            }
-            .sr-coral-ring-1 {
-              transform-origin: 60px 60px;
-              animation: srRingExpand 0.5s 0.15s cubic-bezier(0.34,1.4,0.64,1) both;
-            }
-            .sr-coral-ring-2 {
-              transform-origin: 60px 60px;
-              animation: srRingExpand 0.5s 0.25s cubic-bezier(0.34,1.4,0.64,1) both;
-            }
-            .sr-coral-ring-3 {
-              transform-origin: 60px 60px;
-              animation: srRingExpand 0.5s 0.35s cubic-bezier(0.34,1.4,0.64,1) both;
-            }
-            .sr-center-dot {
-              transform-origin: 60px 60px;
-              animation: srRingExpand 0.4s 0.45s cubic-bezier(0.34,1.8,0.64,1) both;
-            }
-            @keyframes srRingExpand {
-              from { transform: scale(0); opacity: 0; }
-              to   { transform: scale(1); opacity: 1; }
-            }
-            .sr-ch {
-              stroke-dasharray: 12;
-              stroke-dashoffset: 12;
-              animation: srDrawCH 0.3s ease forwards;
-            }
-            .sr-ch1 { animation-delay: 0.55s; }
-            .sr-ch2 { animation-delay: 0.6s; }
-            .sr-ch3 { animation-delay: 0.65s; }
-            .sr-ch4 { animation-delay: 0.7s; }
-            @keyframes srDrawCH {
-              to { stroke-dashoffset: 0; }
-            }
-            .sr-scanning-ring {
-              transform-origin: 60px 60px;
-              animation:
-                srRingExpand 0.5s 0.15s cubic-bezier(0.34,1.4,0.64,1) both,
-                srSpin 8s 0.65s linear infinite;
-            }
-            .sr-orbit {
-              transform-origin: 60px 60px;
-              stroke-dasharray: 6 10;
-              opacity: 0;
-              animation: srOrbitIn 0.4s 0.8s ease forwards, srSpin 5s 1.2s linear infinite;
-            }
-            @keyframes srOrbitIn {
-              to { opacity: 0.35; }
-            }
-            @keyframes srSpin {
-              from { transform: rotate(0deg); }
-              to   { transform: rotate(360deg); }
-            }
-            .sr-icon-group { cursor: pointer; }
-            .sr-icon-group:hover .sr-orbit {
-              animation: srSpin 1.5s linear infinite;
-              opacity: 0.6;
-            }
-            .sr-icon-group:hover .sr-center-dot {
-              animation: srDotPulse 0.6s ease infinite;
-            }
-            @keyframes srDotPulse {
-              0%, 100% { r: 5; }
-              50%       { r: 8; }
-            }
-            .sr-label-wrap {
-              animation: srFadeUp 0.4s 0.7s ease both;
-            }
-            @keyframes srFadeUp {
-              from { opacity: 0; transform: translateY(6px); }
-              to   { opacity: 1; transform: translateY(0); }
-            }
-          </style>
-          <clipPath id="sr-clip-2">
-            <rect x="20" y="20" width="80" height="80"/>
-          </clipPath>
-        </defs>
-        <g class="sr-icon-group">
-          <rect x="26" y="26" width="80" height="80" fill="#FF4D6A" opacity="0.25"/>
-          <rect class="sr-bg-sq" x="20" y="20" width="80" height="80" fill="#0d0d0d" stroke="#FF4D6A" stroke-width="3"/>
-          <circle class="sr-scanning-ring" cx="60" cy="60" r="28" fill="#FF4D6A"/>
-          <circle class="sr-coral-ring-2" cx="60" cy="60" r="18" fill="none" stroke="#0d0d0d" stroke-width="4"/>
-          <circle class="sr-coral-ring-3" cx="60" cy="60" r="9"  fill="#0d0d0d"/>
-          <circle class="sr-center-dot" cx="60" cy="60" r="5" fill="#FF4D6A"/>
-          <circle class="sr-orbit" cx="60" cy="60" r="34" fill="none" stroke="#FF4D6A" stroke-width="1.5"/>
-          <line class="sr-ch sr-ch1" x1="60" y1="24" x2="60" y2="32" stroke="#f5f0e8" stroke-width="2.5" stroke-linecap="round"/>
-          <line class="sr-ch sr-ch2" x1="60" y1="88" x2="60" y2="96" stroke="#f5f0e8" stroke-width="2.5" stroke-linecap="round"/>
-          <line class="sr-ch sr-ch3" x1="24" y1="60" x2="32" y2="60" stroke="#f5f0e8" stroke-width="2.5" stroke-linecap="round"/>
-          <line class="sr-ch sr-ch4" x1="88" y1="60" x2="96" y2="60" stroke="#f5f0e8" stroke-width="2.5" stroke-linecap="round"/>
-          <g class="sr-label-wrap">
-            <text x="60" y="125" text-anchor="middle" class="sr-label">The Search</text>
-          </g>
-        </g>
-      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="240" height="240">
+  <defs>
+    <style>
+      .bg-sq {
+        transform-origin: 50px 50px;
+        animation: squareIn 0.45s cubic-bezier(0.34,1.4,0.64,1) both;
+      }
+      @keyframes squareIn {
+        from { transform: scale(0.5); opacity: 0; }
+        to   { transform: scale(1); opacity: 1; }
+      }
+      .ring-1 {
+        transform-origin: 50px 50px;
+        animation: ringExpand 0.5s 0.15s cubic-bezier(0.34,1.4,0.64,1) both;
+      }
+      .ring-2 {
+        transform-origin: 50px 50px;
+        animation: ringExpand 0.5s 0.28s cubic-bezier(0.34,1.4,0.64,1) both;
+      }
+      .ring-3 {
+        transform-origin: 50px 50px;
+        animation: ringExpand 0.5s 0.4s cubic-bezier(0.34,1.4,0.64,1) both;
+      }
+      .center-dot {
+        transform-origin: 50px 50px;
+        animation: ringExpand 0.4s 0.52s cubic-bezier(0.34,1.8,0.64,1) both;
+      }
+      @keyframes ringExpand {
+        from { transform: scale(0); opacity: 0; }
+        to   { transform: scale(1); opacity: 1; }
+      }
+      .orbit {
+        transform-origin: 50px 50px;
+        stroke-dasharray: 6 10;
+        opacity: 0;
+        animation: orbitIn 0.4s 0.8s ease forwards, spin 5s 1.2s linear infinite;
+      }
+      @keyframes orbitIn { to { opacity: 0.4; } }
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+      .ch {
+        stroke-dasharray: 12;
+        stroke-dashoffset: 12;
+        animation: drawCH 0.3s ease forwards;
+      }
+      .ch1 { animation-delay: 0.58s; }
+      .ch2 { animation-delay: 0.64s; }
+      .ch3 { animation-delay: 0.70s; }
+      .ch4 { animation-delay: 0.76s; }
+      @keyframes drawCH { to { stroke-dashoffset: 0; } }
+      .icon-group { cursor: pointer; }
+      .icon-group:hover .orbit { animation: spin 1.5s linear infinite; opacity: 0.65; }
+    </style>
+  </defs>
+
+  <g class="icon-group">
+    <rect x="6" y="6" width="88" height="88" fill="#FF4D6A" opacity="0.22"/>
+    <rect class="bg-sq" x="0" y="0" width="100" height="100" fill="#0d0d0d" stroke="#FF4D6A" stroke-width="3"/>
+    <circle class="ring-1" cx="50" cy="50" r="34" fill="#FF4D6A"/>
+    <circle class="ring-2" cx="50" cy="50" r="22" fill="none" stroke="#0d0d0d" stroke-width="5"/>
+    <circle class="ring-3" cx="50" cy="50" r="11" fill="#0d0d0d"/>
+    <circle class="center-dot" cx="50" cy="50" r="5" fill="#FF4D6A"/>
+    <circle class="orbit" cx="50" cy="50" r="42" fill="none" stroke="#FF4D6A" stroke-width="1.5"/>
+    <line class="ch ch1" x1="50" y1="4"  x2="50" y2="14" stroke="#f5f0e8" stroke-width="3" stroke-linecap="round"/>
+    <line class="ch ch2" x1="50" y1="86" x2="50" y2="96" stroke="#f5f0e8" stroke-width="3" stroke-linecap="round"/>
+    <line class="ch ch3" x1="4"  y1="50" x2="14" y2="50" stroke="#f5f0e8" stroke-width="3" stroke-linecap="round"/>
+    <line class="ch ch4" x1="86" y1="50" x2="96" y2="50" stroke="#f5f0e8" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>
     </span>
     The Search
   </div>

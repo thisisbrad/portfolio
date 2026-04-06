@@ -23,11 +23,13 @@
 body.theme-buildlog  { --accent: var(--yellow);  --accent-dark: var(--black); }
 body.theme-search    { --accent: var(--coral);   --accent-dark: var(--white); }
 body.theme-devreturn { --accent: var(--cyan);    --accent-dark: var(--black); }
+body.theme-hardwon   { --accent: var(--orange);  --accent-dark: var(--black); }
 
 /* Post pages: replace busy home-page pattern with a subtle dot grid */
 body.theme-buildlog::before,
 body.theme-search::before,
-body.theme-devreturn::before {
+body.theme-devreturn::before,
+body.theme-hardwon::before {
   background-image: radial-gradient(circle, rgba(13,13,13,0.07) 1.5px, transparent 1.5px);
   background-size: 26px 26px;
   opacity: 1;
@@ -557,6 +559,7 @@ nav {
 .post-card.coral::before  { background: var(--coral); }
 .post-card.green::before  { background: var(--green); }
 .post-card.purple::before { background: var(--purple); }
+.post-card.orange::before { background: var(--orange); }
 
 .post-card h2 {
   font-family: 'Bricolage Grotesque', sans-serif;
@@ -668,6 +671,7 @@ nav {
 .post-pill.craft     { background: var(--cyan);   color: var(--black); }
 .post-pill.search    { background: var(--coral);  color: var(--white); }
 .post-pill.devreturn { background: var(--cyan);   color: var(--black); }
+.post-pill.hardwon   { background: var(--orange); color: var(--black); }
 
 /* ---- Footer ----------------------------------------------- */
 footer {
@@ -1000,6 +1004,285 @@ footer {
 
 .dp-pip.done    { background: var(--cyan); }
 .dp-pip.current { background: var(--black); }
+
+/* ---- Hard Won Header -------------------------------------- */
+.theme-hardwon .post-header {
+  background: var(--orange);
+  border: 3px solid var(--black);
+  box-shadow: 8px 8px 0 var(--black);
+  padding: 40px 36px 36px;
+  margin: 48px 0 52px;
+  position: relative;
+  overflow: visible;
+}
+
+.theme-hardwon .badge-icon-burst {
+  bottom: auto;
+  top: 20px;
+  left: -230px;
+}
+
+
+.theme-hardwon .post-header::before {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  right: -30px;
+  width: 120px;
+  height: 120px;
+  background: var(--yellow);
+  border: 3px solid var(--black);
+  transform: rotate(18deg);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.theme-hardwon .post-header::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: 80px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 8px solid var(--black);
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.header-slabs {
+  position: absolute;
+  top: 32px;
+  right: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  opacity: 0.22;
+}
+
+.header-slab {
+  height: 10px;
+  background: var(--black);
+}
+
+.hardwon-badge {
+  background: var(--black);
+  color: var(--orange);
+}
+
+.lesson-number {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--black);
+  opacity: 0.45;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lesson-number::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: var(--black);
+  opacity: 0.25;
+  max-width: 200px;
+}
+
+.theme-hardwon .post-title {
+  color: var(--black);
+}
+
+.theme-hardwon .post-meta {
+  color: rgba(13, 13, 13, 0.6);
+}
+
+.theme-hardwon .tag:hover {
+  background: var(--black);
+  color: var(--orange);
+}
+
+/* ---- Hard Won Body ---------------------------------------- */
+.theme-hardwon .post-body {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.theme-hardwon .post-body h2::before {
+  background: var(--orange);
+}
+
+.scene-block {
+  border-left: 6px solid var(--orange);
+  padding: 14px 20px;
+  margin: 0 0 2em;
+  font-style: italic;
+  font-size: 1.08rem;
+  color: #333;
+  background: rgba(255, 122, 0, 0.06);
+}
+
+.scene-block p {
+  margin-bottom: 0;
+}
+
+.section-rule {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 2.8em 0 1.6em;
+}
+
+.section-rule::before,
+.section-rule::after {
+  content: '';
+  flex: 1;
+  height: 3px;
+  background: var(--black);
+  opacity: 0.12;
+}
+
+.section-rule-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #999;
+  white-space: nowrap;
+}
+
+.lesson-blocks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin: 2.4em 0;
+  border: 3px solid var(--black);
+  box-shadow: 6px 6px 0 var(--black);
+  overflow: hidden;
+}
+
+.lesson-block {
+  padding: 24px 22px 22px;
+  position: relative;
+}
+
+.lesson-block.broke {
+  background: var(--black);
+  border-right: 3px solid var(--black);
+}
+
+.lesson-block.held {
+  background: var(--white);
+}
+
+.lesson-block-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 2px solid;
+  display: inline-block;
+  margin-bottom: 14px;
+}
+
+.broke .lesson-block-label {
+  color: var(--coral);
+  border-color: var(--coral);
+}
+
+.held .lesson-block-label {
+  color: var(--black);
+  border-color: var(--black);
+  background: var(--green);
+}
+
+.broke::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 28px solid var(--coral);
+  border-left: 28px solid transparent;
+  opacity: 0.6;
+}
+
+.held::after {
+  content: '';
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--green);
+  border: 2.5px solid var(--black);
+  opacity: 0.7;
+}
+
+.lesson-block-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+
+.broke .lesson-block-title { color: var(--white); }
+.held  .lesson-block-title { color: var(--black); }
+
+.lesson-block-body {
+  font-family: 'Lora', serif;
+  font-size: 0.88rem;
+  line-height: 1.75;
+}
+
+.broke .lesson-block-body { color: #ccc; }
+.held  .lesson-block-body { color: #333; }
+
+.lesson-block.held.none { background: #f0ebe0; }
+.lesson-block.held.none .lesson-block-body { color: #999; font-style: italic; }
+
+.closing-thought {
+  border: 3px solid var(--black);
+  border-left: 8px solid var(--orange);
+  padding: 18px 22px;
+  margin: 2.4em 0 0;
+  background: var(--white);
+  box-shadow: 4px 4px 0 var(--black);
+  font-style: italic;
+  font-size: 1.02rem;
+  color: #333;
+}
+
+.closing-thought p { margin: 0; }
+
+.closing-thought::before {
+  content: 'STILL THINKING ABOUT';
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--orange);
+  margin-bottom: 8px;
+  font-style: normal;
+}
+
+@media (max-width: 600px) {
+  .lesson-blocks { grid-template-columns: 1fr; }
+  .lesson-block.broke { border-right: none; border-bottom: 3px solid var(--black); }
+  .header-slabs { display: none; }
+}
 
 /* ---- Post Body -------------------------------------------- */
 .post-body {

@@ -12,7 +12,8 @@
           "enum": [
             "build-log",
             "the-search",
-            "dev-return"
+            "dev-return",
+            "hard-won"
           ]
         },
         "date": {
@@ -51,6 +52,12 @@
         },
         "seriesTotal": {
           "type": "number"
+        },
+        "lessonNumber": {
+          "type": "number"
+        },
+        "subtitle": {
+          "type": "string"
         },
         "featured": {
           "type": "boolean",

@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import BuildLogHeader from '../components/BuildLogHeader.astro';
 import SearchHeader from '../components/SearchHeader.astro';
 import DevReturnHeader from '../components/DevReturnHeader.astro';
+import HardWonHeader from '../components/HardWonHeader.astro';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -21,6 +22,8 @@ const {
   logNumber,
   seriesEntry,
   seriesTotal,
+  lessonNumber,
+  subtitle,
   excerpt,
 } = post.data;
 ---
@@ -52,6 +55,16 @@ const {
         tags={tags}
         seriesEntry={seriesEntry}
         seriesTotal={seriesTotal}
+      />
+    )}
+    {type === 'hard-won' && (
+      <HardWonHeader
+        title={title}
+        date={date}
+        readTime={readTime}
+        tags={tags}
+        lessonNumber={lessonNumber}
+        subtitle={subtitle}
       />
     )}
 

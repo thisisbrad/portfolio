@@ -23,105 +23,90 @@ const pips = Array.from({ length: seriesTotal }, (_, i) => {
   <div class="devreturn-series">Dev Return Series</div>
   <div class="section-badge badge-with-icon">
     <span class="badge-icon-burst" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" width="240" height="280">
-        <defs>
-          <style>
-            .dr-label {
-              font-family: 'Bricolage Grotesque', 'Arial Black', sans-serif;
-              font-size: 11px;
-              font-weight: 800;
-              letter-spacing: 2px;
-              text-transform: uppercase;
-              fill: #0d0d0d;
-            }
-            .dr-bg-sq {
-              transform-origin: 60px 60px;
-              animation: drPopIn 0.45s cubic-bezier(0.34,1.4,0.64,1) both;
-            }
-            @keyframes drPopIn {
-              from { transform: scale(0.6); opacity: 0; }
-              to   { transform: scale(1);   opacity: 1; }
-            }
-            .dr-pip { opacity: 0; animation: drPipIn 0.2s ease forwards; }
-            .dr-pip1 { animation-delay: 0.3s; }
-            .dr-pip2 { animation-delay: 0.45s; }
-            .dr-pip3 { animation-delay: 0.6s; }
-            .dr-pip4 { animation-delay: 0.75s; opacity: 0.2; animation: drPipInFade 0.2s 0.75s ease forwards; }
-            @keyframes drPipIn     { to { opacity: 1; } }
-            @keyframes drPipInFade { to { opacity: 0.2; } }
-            .dr-chev-1 {
-              stroke-dasharray: 80;
-              stroke-dashoffset: 80;
-              animation: drDrawChev 0.45s 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
-            }
-            .dr-chev-2 {
-              stroke-dasharray: 80;
-              stroke-dashoffset: 80;
-              animation: drDrawChev 0.45s 0.65s cubic-bezier(0.4,0,0.2,1) forwards;
-            }
-            @keyframes drDrawChev {
-              to { stroke-dashoffset: 0; }
-            }
-            .dr-pdot {
-              transform-origin: 28px 88px;
-              animation: drBounceIn 0.5s 0.75s cubic-bezier(0.34,1.8,0.64,1) both;
-            }
-            @keyframes drBounceIn {
-              from { transform: scale(0); opacity: 0; }
-              to   { transform: scale(1); opacity: 1; }
-            }
-            .dr-icon-group { cursor: pointer; }
-            .dr-icon-group:hover .dr-chev-1 {
-              animation: drMarch 0.6s ease infinite;
-            }
-            .dr-icon-group:hover .dr-chev-2 {
-              animation: drMarch 0.6s 0.15s ease infinite;
-            }
-            @keyframes drMarch {
-              0%   { transform: translateX(0);   opacity: 1; }
-              60%  { transform: translateX(6px); opacity: 0.5; }
-              61%  { transform: translateX(-4px); opacity: 0; }
-              62%  { transform: translateX(-4px); opacity: 0; }
-              100% { transform: translateX(0);   opacity: 1; }
-            }
-            .dr-icon-group:hover .dr-pip3 {
-              animation: drFlash 0.5s ease infinite;
-            }
-            @keyframes drFlash {
-              0%, 100% { opacity: 1; }
-              50%       { opacity: 0.3; }
-            }
-            .dr-label-wrap {
-              animation: drFadeUp 0.4s 0.9s ease both;
-            }
-            @keyframes drFadeUp {
-              from { opacity: 0; transform: translateY(6px); }
-              to   { opacity: 1; transform: translateY(0); }
-            }
-          </style>
-        </defs>
-        <g class="dr-icon-group">
-          <rect x="26" y="26" width="80" height="80" fill="#0d0d0d" opacity="0.18"/>
-          <rect class="dr-bg-sq" x="20" y="20" width="80" height="80" fill="#00E5FF" stroke="#0d0d0d" stroke-width="3"/>
-          <rect class="dr-pip dr-pip1" x="26" y="27" width="13" height="9" fill="#0d0d0d"/>
-          <rect class="dr-pip dr-pip2" x="43" y="27" width="13" height="9" fill="#0d0d0d"/>
-          <rect class="dr-pip dr-pip3" x="60" y="27" width="13" height="9" fill="#0d0d0d"/>
-          <rect class="dr-pip dr-pip4" x="77" y="27" width="13" height="9" fill="#0d0d0d"/>
-          <polyline class="dr-chev-1"
-            points="26,72 60,42 94,72"
-            fill="none" stroke="#0d0d0d" stroke-width="8"
-            stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline class="dr-chev-2"
-            points="26,84 60,56 94,84"
-            fill="none" stroke="#0d0d0d" stroke-width="3.5"
-            stroke-linecap="round" stroke-linejoin="round"
-            opacity="0.28"/>
-          <circle class="dr-pdot" cx="28" cy="88" r="6" fill="#C653FF" stroke="#0d0d0d" stroke-width="2"/>
-          <g class="dr-label-wrap">
-            <text x="60" y="125" text-anchor="middle" class="dr-label">Dev Return</text>
-          </g>
-        </g>
-      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="240" height="240">
+  <defs>
+    <style>
+      .bg-sq {
+        transform-origin: 50px 50px;
+        animation: popIn 0.45s cubic-bezier(0.34,1.4,0.64,1) both;
+      }
+      @keyframes popIn {
+        from { transform: scale(0.6); opacity: 0; }
+        to   { transform: scale(1); opacity: 1; }
+      }
+      .pip { opacity: 0; }
+      .pip1 { animation: pipIn 0.2s 0.3s ease forwards; }
+      .pip2 { animation: pipIn 0.2s 0.5s ease forwards; }
+      .pip3 { animation: pipIn 0.2s 0.7s ease forwards; }
+      .pip4 { animation: pipIn 0.2s 0.9s ease forwards, pipBlink 1.6s 1.1s ease-in-out infinite; }
+      @keyframes pipIn { to { opacity: 1; } }
+      @keyframes pipBlink {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.15; }
+      }
+      .chev-1 {
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        animation: drawChev 0.45s 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+      }
+      .chev-2 {
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        animation: drawChev 0.45s 0.65s cubic-bezier(0.4,0,0.2,1) forwards;
+      }
+      @keyframes drawChev { to { stroke-dashoffset: 0; } }
+      .pdot {
+        transform-origin: 18px 82px;
+        animation: bounceIn 0.5s 0.75s cubic-bezier(0.34,1.8,0.64,1) both;
+      }
+      @keyframes bounceIn {
+        from { transform: scale(0); opacity: 0; }
+        to   { transform: scale(1); opacity: 1; }
+      }
+      .icon-group { cursor: pointer; }
+      .icon-group:hover .chev-1 { animation: march 0.6s ease infinite; }
+      .icon-group:hover .chev-2 { animation: march 0.6s 0.15s ease infinite; }
+      @keyframes march {
+        0%   { transform: translateX(0);   opacity: 1; }
+        60%  { transform: translateX(7px); opacity: 0.4; }
+        61%  { transform: translateX(-4px); opacity: 0; }
+        100% { transform: translateX(0);   opacity: 1; }
+      }
+      .icon-group:hover .pip3 { animation: flash 0.5s ease infinite; }
+      @keyframes flash {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.2; }
+      }
+    </style>
+  </defs>
+
+  <g class="icon-group">
+    <rect x="6" y="6" width="88" height="88" fill="#0d0d0d" opacity="0.15"/>
+    <rect class="bg-sq" x="0" y="0" width="100" height="100" fill="#00E5FF" stroke="#0d0d0d" stroke-width="3"/>
+
+    <!-- progress pips -->
+    <rect class="pip pip1" x="8"  y="8" width="16" height="10" fill="#0d0d0d"/>
+    <rect class="pip pip2" x="30" y="8" width="16" height="10" fill="#0d0d0d"/>
+    <rect class="pip pip3" x="52" y="8" width="16" height="10" fill="#0d0d0d"/>
+    <rect class="pip pip4" x="74" y="8" width="16" height="10" fill="#0d0d0d"/>
+
+    <!-- bold chevron -->
+    <polyline class="chev-1"
+      points="12,72 50,34 88,72"
+      fill="none" stroke="#0d0d0d" stroke-width="10"
+      stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- ghost chevron -->
+    <polyline class="chev-2"
+      points="12,88 50,50 88,88"
+      fill="none" stroke="#0d0d0d" stroke-width="4"
+      stroke-linecap="round" stroke-linejoin="round"
+      opacity="0.25"/>
+
+    <!-- purple dot -->
+    <circle class="pdot" cx="18" cy="82" r="7" fill="#C653FF" stroke="#0d0d0d" stroke-width="2.5"/>
+  </g>
+</svg>
     </span>
     Entry #{seriesEntry} of {seriesTotal}
   </div>
