@@ -958,6 +958,19 @@ footer {
   line-height: 1.5;
 }
 
+/* ---- Build Log Header ------------------------------------- */
+.theme-buildlog .post-header {
+  position: relative;
+  overflow: visible;
+}
+
+.theme-buildlog .badge-icon-burst {
+  bottom: auto;
+  top: 20px;
+  left: auto;
+  right: -230px;
+}
+
 /* ---- Dev Return Header ------------------------------------ */
 .theme-devreturn .post-header {
   border-left: 8px solid var(--cyan);
