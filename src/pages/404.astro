@@ -1,0 +1,368 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="404 — Page Not Found — BRAD.DEV"
+  description="This page does not exist."
+>
+  <div class="page-404">
+
+    <!-- Giant 404 digits -->
+    <div class="error-digits" aria-label="404">
+      <div class="error-digit ed-yellow">4</div>
+      <div class="error-digit ed-coral">0</div>
+      <div class="error-digit ed-cyan">4</div>
+    </div>
+
+    <div class="error-body">
+      <h1 class="error-headline">This page does not exist.</h1>
+      <p class="error-subtext">
+        You typed something wrong, or this content hasn't been written yet.<br />
+        Happens to the best of us.
+      </p>
+    </div>
+
+    <!-- Four section icons as nav cards -->
+    <div class="icon-row">
+
+      <a href="/writing/build-log" class="icon-link icon-bl">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="80" height="80" overflow="hidden">
+          <defs>
+            <style>
+              .bl4-outer{transform-origin:50px 50px;animation:bl4Pop 0.45s cubic-bezier(0.34,1.56,0.64,1) both}
+              @keyframes bl4Pop{from{transform:scale(0.6) rotate(-6deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1}}
+              .bl4-inset{transform-origin:50px 50px;animation:bl4Slide 0.55s 0.15s cubic-bezier(0.34,1.56,0.64,1) both}
+              @keyframes bl4Slide{from{transform:translate(10px,10px);opacity:0}to{transform:translate(0,0);opacity:1}}
+              .bl4-s{opacity:0;animation:bl4Fade 0.3s ease forwards}
+              .bl4-s1{animation-delay:.5s}.bl4-s2{animation-delay:.6s}.bl4-s3{animation-delay:.7s}.bl4-s4{animation-delay:.8s}.bl4-s5{animation-delay:.9s}.bl4-s6{animation-delay:1s}
+              @keyframes bl4Fade{to{opacity:0.18}}
+              .bl4-zz{stroke-dasharray:60;stroke-dashoffset:60;animation:bl4Draw 0.7s 0.3s cubic-bezier(0.4,0,0.2,1) forwards}
+              @keyframes bl4Draw{to{stroke-dashoffset:0}}
+              .bl4-ping{transform-origin:78px 22px;animation:bl4Ping 2.2s ease-out infinite}
+              @keyframes bl4Ping{0%{opacity:1;transform:scale(1)}70%{opacity:0;transform:scale(2.4)}100%{opacity:0;transform:scale(2.4)}}
+            </style>
+            <clipPath id="bl4-clip"><rect x="8" y="8" width="84" height="84"/></clipPath>
+          </defs>
+          <g>
+            <rect x="14" y="14" width="84" height="84" fill="#0d0d0d" opacity="0.15"/>
+            <rect class="bl4-outer" x="8" y="8" width="84" height="84" fill="#FFE600" stroke="#0d0d0d" stroke-width="3"/>
+            <g clip-path="url(#bl4-clip)">
+              <line class="bl4-s bl4-s1" x1="-5" y1="35" x2="55" y2="-5" stroke="#0d0d0d" stroke-width="2"/>
+              <line class="bl4-s bl4-s2" x1="-5" y1="58" x2="78" y2="-5" stroke="#0d0d0d" stroke-width="2"/>
+              <line class="bl4-s bl4-s3" x1="-5" y1="82" x2="95" y2="-5" stroke="#0d0d0d" stroke-width="2"/>
+              <line class="bl4-s bl4-s4" x1="8"  y1="96" x2="96" y2="8"  stroke="#0d0d0d" stroke-width="2"/>
+              <line class="bl4-s bl4-s5" x1="32" y1="96" x2="96" y2="32" stroke="#0d0d0d" stroke-width="2"/>
+              <line class="bl4-s bl4-s6" x1="58" y1="96" x2="96" y2="58" stroke="#0d0d0d" stroke-width="2"/>
+            </g>
+            <rect class="bl4-inset" x="56" y="56" width="34" height="34" fill="#0d0d0d"/>
+            <polyline class="bl4-zz" points="8,62 20,48 32,62 44,48 56,62 68,48 80,62 92,50" fill="none" stroke="#0d0d0d" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="78" cy="22" r="9" fill="#39FF14" stroke="#0d0d0d" stroke-width="2.5"/>
+            <circle class="bl4-ping" cx="78" cy="22" r="9" fill="none" stroke="#39FF14" stroke-width="2"/>
+          </g>
+        </svg>
+        <span>Build Log</span>
+      </a>
+
+      <a href="/writing/the-search" class="icon-link icon-ts">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="80" height="80">
+          <defs>
+            <style>
+              .ts4-bg{transform-origin:50px 50px;animation:ts4SqIn 0.45s cubic-bezier(0.34,1.4,0.64,1) both}
+              @keyframes ts4SqIn{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
+              .ts4-r1{transform-origin:50px 50px;animation:ts4Ring 0.5s 0.15s cubic-bezier(0.34,1.4,0.64,1) both}
+              .ts4-r2{transform-origin:50px 50px;animation:ts4Ring 0.5s 0.28s cubic-bezier(0.34,1.4,0.64,1) both}
+              .ts4-r3{transform-origin:50px 50px;animation:ts4Ring 0.5s 0.4s cubic-bezier(0.34,1.4,0.64,1) both}
+              .ts4-cd{transform-origin:50px 50px;animation:ts4Ring 0.4s 0.52s cubic-bezier(0.34,1.8,0.64,1) both}
+              @keyframes ts4Ring{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+              .ts4-orb{transform-origin:50px 50px;stroke-dasharray:6 10;opacity:0;animation:ts4OrbIn 0.4s 0.8s ease forwards,ts4Spin 5s 1.2s linear infinite}
+              @keyframes ts4OrbIn{to{opacity:0.4}}
+              @keyframes ts4Spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+              .ts4-ch{stroke-dasharray:12;stroke-dashoffset:12;animation:ts4DrawCH 0.3s ease forwards}
+              .ts4-ch1{animation-delay:.58s}.ts4-ch2{animation-delay:.64s}.ts4-ch3{animation-delay:.70s}.ts4-ch4{animation-delay:.76s}
+              @keyframes ts4DrawCH{to{stroke-dashoffset:0}}
+            </style>
+          </defs>
+          <g>
+            <rect x="6" y="6" width="88" height="88" fill="#FF4D6A" opacity="0.22"/>
+            <rect class="ts4-bg" x="0" y="0" width="100" height="100" fill="#0d0d0d" stroke="#FF4D6A" stroke-width="3"/>
+            <circle class="ts4-r1" cx="50" cy="50" r="34" fill="#FF4D6A"/>
+            <circle class="ts4-r2" cx="50" cy="50" r="22" fill="none" stroke="#0d0d0d" stroke-width="5"/>
+            <circle class="ts4-r3" cx="50" cy="50" r="11" fill="#0d0d0d"/>
+            <circle class="ts4-cd" cx="50" cy="50" r="5" fill="#FF4D6A"/>
+            <circle class="ts4-orb" cx="50" cy="50" r="42" fill="none" stroke="#FF4D6A" stroke-width="1.5"/>
+            <line class="ts4-ch ts4-ch1" x1="50" y1="4"  x2="50" y2="14" stroke="#f5f0e8" stroke-width="3" stroke-linecap="round"/>
+            <line class="ts4-ch ts4-ch2" x1="50" y1="86" x2="50" y2="96" stroke="#f5f0e8" stroke-width="3" stroke-linecap="round"/>
+            <line class="ts4-ch ts4-ch3" x1="4"  y1="50" x2="14" y2="50" stroke="#f5f0e8" stroke-width="3" stroke-linecap="round"/>
+            <line class="ts4-ch ts4-ch4" x1="86" y1="50" x2="96" y2="50" stroke="#f5f0e8" stroke-width="3" stroke-linecap="round"/>
+          </g>
+        </svg>
+        <span>The Search</span>
+      </a>
+
+      <a href="/writing/dev-return" class="icon-link icon-dr">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="80" height="80">
+          <defs>
+            <style>
+              .dr4-bg{transform-origin:50px 50px;animation:dr4Pop 0.45s cubic-bezier(0.34,1.4,0.64,1) both}
+              @keyframes dr4Pop{from{transform:scale(0.6);opacity:0}to{transform:scale(1);opacity:1}}
+              .dr4-p{opacity:0}
+              .dr4-p1{animation:dr4PipIn 0.2s 0.3s ease forwards}
+              .dr4-p2{animation:dr4PipIn 0.2s 0.5s ease forwards}
+              .dr4-p3{animation:dr4PipIn 0.2s 0.7s ease forwards}
+              .dr4-p4{animation:dr4PipIn 0.2s 0.9s ease forwards,dr4Blink 1.6s 1.1s ease-in-out infinite}
+              @keyframes dr4PipIn{to{opacity:1}}
+              @keyframes dr4Blink{0%,100%{opacity:1}50%{opacity:0.15}}
+              .dr4-c1{stroke-dasharray:100;stroke-dashoffset:100;animation:dr4DrawC 0.45s 0.5s cubic-bezier(0.4,0,0.2,1) forwards}
+              .dr4-c2{stroke-dasharray:100;stroke-dashoffset:100;animation:dr4DrawC 0.45s 0.65s cubic-bezier(0.4,0,0.2,1) forwards}
+              @keyframes dr4DrawC{to{stroke-dashoffset:0}}
+              .dr4-dot{transform-origin:18px 82px;animation:dr4Bounce 0.5s 0.75s cubic-bezier(0.34,1.8,0.64,1) both}
+              @keyframes dr4Bounce{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+            </style>
+          </defs>
+          <g>
+            <rect x="6" y="6" width="88" height="88" fill="#0d0d0d" opacity="0.15"/>
+            <rect class="dr4-bg" x="0" y="0" width="100" height="100" fill="#00E5FF" stroke="#0d0d0d" stroke-width="3"/>
+            <rect class="dr4-p dr4-p1" x="8"  y="8" width="16" height="10" fill="#0d0d0d"/>
+            <rect class="dr4-p dr4-p2" x="30" y="8" width="16" height="10" fill="#0d0d0d"/>
+            <rect class="dr4-p dr4-p3" x="52" y="8" width="16" height="10" fill="#0d0d0d"/>
+            <rect class="dr4-p dr4-p4" x="74" y="8" width="16" height="10" fill="#0d0d0d"/>
+            <polyline class="dr4-c1" points="12,72 50,34 88,72" fill="none" stroke="#0d0d0d" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline class="dr4-c2" points="12,88 50,50 88,88" fill="none" stroke="#0d0d0d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.25"/>
+            <circle class="dr4-dot" cx="18" cy="82" r="7" fill="#C653FF" stroke="#0d0d0d" stroke-width="2.5"/>
+          </g>
+        </svg>
+        <span>Dev Return</span>
+      </a>
+
+      <a href="/writing/hard-won" class="icon-link icon-hw">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="80" height="80" overflow="hidden">
+          <defs>
+            <style>
+              .hw4-sq{animation:hw4Drop 0.45s 0.75s cubic-bezier(0.34,1.5,0.64,1) both}
+              @keyframes hw4Drop{from{transform:translate(-10px,-10px) rotate(-12deg);opacity:0}to{transform:translate(0,0) rotate(-8deg);opacity:1}}
+              .hw4-cr{transform-origin:42px 18px;animation:hw4Crown 0.5s 0.9s cubic-bezier(0.34,1.8,0.64,1) both}
+              @keyframes hw4Crown{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+              .hw4-sl{stroke-dasharray:90;stroke-dashoffset:90;animation:hw4Slash 0.4s 1.05s cubic-bezier(0.4,0,0.2,1) forwards}
+              @keyframes hw4Slash{to{stroke-dashoffset:0}}
+              .hw4-ad{transform-origin:72px 52px;animation:hw4Dot 0.45s 1.15s cubic-bezier(0.34,2,0.64,1) both}
+              @keyframes hw4Dot{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+              .hw4-tri{transform-origin:92px 92px;animation:hw4Tri 0.4s 1.1s cubic-bezier(0.34,1.6,0.64,1) both}
+              @keyframes hw4Tri{from{transform:scale(0) rotate(12deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1}}
+              .hw4-th{opacity:0;animation:hw4Th 0.18s ease forwards}
+              .hw4-th1{animation-delay:1.22s}.hw4-th2{animation-delay:1.30s}.hw4-th3{animation-delay:1.38s}.hw4-th4{animation-delay:1.46s}
+              @keyframes hw4Th{to{opacity:0.28}}
+            </style>
+            <clipPath id="hw4-tri"><polygon points="58,92 92,92 92,58"/></clipPath>
+            <clipPath id="hw4-c1"><rect x="28" y="76" width="28" height="12"/></clipPath>
+            <clipPath id="hw4-c2"><rect x="28" y="62" width="28" height="12"/></clipPath>
+            <clipPath id="hw4-c3"><rect x="28" y="48" width="28" height="12"/></clipPath>
+            <clipPath id="hw4-c4"><rect x="28" y="34" width="28" height="12"/></clipPath>
+            <clipPath id="hw4-c5"><rect x="28" y="20" width="28" height="12"/></clipPath>
+          </defs>
+          <g>
+            <rect x="6" y="6" width="88" height="88" fill="#0d0d0d" opacity="0.2"/>
+            <rect x="0" y="0" width="100" height="100" fill="#FF7A00" stroke="#0d0d0d" stroke-width="3"/>
+            <g clip-path="url(#hw4-c1)">
+              <rect x="28" width="28" fill="#0d0d0d" stroke="#0d0d0d" stroke-width="2" height="0" y="88">
+                <animate attributeName="height" from="0" to="12" dur="0.18s" begin="0.05s" fill="freeze"/>
+                <animate attributeName="y" from="88" to="76" dur="0.18s" begin="0.05s" fill="freeze"/>
+              </rect>
+            </g>
+            <g clip-path="url(#hw4-c2)">
+              <rect x="28" width="28" fill="#0d0d0d" stroke="#0d0d0d" stroke-width="2" height="0" y="74">
+                <animate attributeName="height" from="0" to="12" dur="0.18s" begin="0.22s" fill="freeze"/>
+                <animate attributeName="y" from="74" to="62" dur="0.18s" begin="0.22s" fill="freeze"/>
+              </rect>
+            </g>
+            <g clip-path="url(#hw4-c3)">
+              <rect x="28" width="28" fill="#0d0d0d" stroke="#0d0d0d" stroke-width="2" height="0" y="60">
+                <animate attributeName="height" from="0" to="12" dur="0.18s" begin="0.39s" fill="freeze"/>
+                <animate attributeName="y" from="60" to="48" dur="0.18s" begin="0.39s" fill="freeze"/>
+              </rect>
+            </g>
+            <g clip-path="url(#hw4-c4)">
+              <rect x="28" width="28" fill="#0d0d0d" stroke="#0d0d0d" stroke-width="2" height="0" y="46">
+                <animate attributeName="height" from="0" to="12" dur="0.18s" begin="0.56s" fill="freeze"/>
+                <animate attributeName="y" from="46" to="34" dur="0.18s" begin="0.56s" fill="freeze"/>
+              </rect>
+            </g>
+            <g clip-path="url(#hw4-c5)">
+              <rect x="28" width="28" fill="#0d0d0d" stroke="#0d0d0d" stroke-width="2" height="0" y="32">
+                <animate attributeName="height" from="0" to="12" dur="0.18s" begin="0.73s" fill="freeze"/>
+                <animate attributeName="y" from="32" to="20" dur="0.18s" begin="0.73s" fill="freeze"/>
+              </rect>
+            </g>
+            <g class="hw4-tri">
+              <polygon points="56,94 94,94 94,56" fill="#FFE600" stroke="#0d0d0d" stroke-width="3" stroke-linejoin="round"/>
+              <g clip-path="url(#hw4-tri)">
+                <line class="hw4-th hw4-th1" x1="58" y1="92" x2="92" y2="58" stroke="#0d0d0d" stroke-width="2.5"/>
+                <line class="hw4-th hw4-th2" x1="66" y1="94" x2="94" y2="66" stroke="#0d0d0d" stroke-width="2.5"/>
+                <line class="hw4-th hw4-th3" x1="78" y1="94" x2="94" y2="78" stroke="#0d0d0d" stroke-width="2.5"/>
+                <line class="hw4-th hw4-th4" x1="52" y1="92" x2="92" y2="52" stroke="#0d0d0d" stroke-width="2.5"/>
+              </g>
+            </g>
+            <rect class="hw4-sq" x="8" y="18" width="32" height="32" fill="#C653FF" stroke="#0d0d0d" stroke-width="3" transform="rotate(-8 24 34)"/>
+            <circle class="hw4-cr" cx="42" cy="18" r="14" fill="#00E5FF" stroke="#0d0d0d" stroke-width="3"/>
+            <circle class="hw4-cr" cx="42" cy="18" r="7"  fill="none" stroke="#0d0d0d" stroke-width="2.5"/>
+            <circle class="hw4-cr" cx="42" cy="18" r="3"  fill="#0d0d0d"/>
+            <line class="hw4-sl" x1="62" y1="12" x2="14" y2="72" stroke="#0d0d0d" stroke-width="3.5" stroke-linecap="round"/>
+            <circle class="hw4-ad" cx="72" cy="52" r="8" fill="#FF4D6A" stroke="#0d0d0d" stroke-width="2.5"/>
+          </g>
+        </svg>
+        <span>Hard Won</span>
+      </a>
+
+    </div>
+
+    <div class="error-cta-row">
+      <a href="/" class="home-cta">← Go Home</a>
+    </div>
+
+  </div>
+</BaseLayout>
+
+<style>
+.page-404 {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 24px 100px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Three giant digit blocks */
+.error-digits {
+  display: flex;
+  gap: 0;
+  margin-bottom: 48px;
+}
+
+.error-digit {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(6rem, 18vw, 14rem);
+  line-height: 1;
+  padding: 0 clamp(12px, 3vw, 24px);
+  border: 4px solid var(--black);
+  box-shadow: 8px 8px 0 var(--black);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.ed-yellow { background: var(--yellow); color: var(--black); }
+.ed-coral  { background: var(--coral);  color: var(--white); margin: 0 -4px; position: relative; z-index: 1; }
+.ed-cyan   { background: var(--cyan);   color: var(--black); }
+
+.error-body {
+  margin-bottom: 48px;
+}
+
+.error-headline {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.03em;
+  color: var(--black);
+  margin-bottom: 14px;
+}
+
+.error-subtext {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: rgba(13,13,13,0.55);
+}
+
+/* Four section icon nav cards */
+.icon-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 52px;
+}
+
+.icon-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  padding: 18px 16px 14px;
+  border: 3px solid var(--black);
+  box-shadow: 5px 5px 0 var(--black);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  cursor: crosshair;
+  flex: 1;
+  min-width: 120px;
+}
+
+.icon-link:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--black);
+}
+
+.icon-bl { background: var(--yellow); }
+.icon-ts { background: var(--coral); }
+.icon-dr { background: var(--cyan); }
+.icon-hw { background: var(--orange); }
+
+.icon-link span {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--black);
+}
+
+.icon-ts span { color: var(--white); }
+
+/* Home CTA */
+.error-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.home-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  background: var(--black);
+  color: var(--yellow);
+  padding: 14px 28px;
+  border: 3px solid var(--black);
+  box-shadow: 6px 6px 0 var(--yellow);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  cursor: crosshair;
+}
+
+.home-cta:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0 var(--yellow);
+}
+
+@media (max-width: 640px) {
+  .error-digits {
+    margin-bottom: 36px;
+  }
+  .error-digit {
+    padding: 0 clamp(8px, 2vw, 14px);
+  }
+  .icon-row {
+    gap: 12px;
+  }
+  .icon-link {
+    min-width: calc(50% - 6px);
+    flex: none;
+    width: calc(50% - 6px);
+  }
+}
+</style>

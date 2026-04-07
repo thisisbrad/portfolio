@@ -1,0 +1,271 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+
+const posts = (await getCollection('posts'))
+  .filter(p => p.data.type === 'build-log')
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const latestLogNumber = posts[0]?.data.logNumber;
+const postCount = posts.length;
+---
+
+<BaseLayout
+  title="Build Log — BRAD.DEV"
+  description="Step-by-step development logs. The work, documented as it happens."
+  type="build-log"
+  activeLink="writing"
+>
+  <div class="site-wrapper">
+
+    <section class="bl-hero scroll-reveal">
+      <div class="bl-hero-text">
+        <span class="bl-eyebrow">// The work, step by step.</span>
+        <h1 class="bl-title">BUILD<br />LOG</h1>
+        <div class="bl-meta-row">
+          <span class="bl-count-pill">
+            {postCount} {postCount === 1 ? 'entry' : 'entries'}
+          </span>
+          {latestLogNumber && (
+            <span class="bl-latest-label">
+              Now on Log #{String(latestLogNumber).padStart(2, '0')}
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div class="bl-icon-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="160" height="160" overflow="hidden">
+          <defs>
+            <style>
+              .outer-sq { transform-origin:50px 50px; animation:popIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both; }
+              @keyframes popIn { from { transform:scale(0.6) rotate(-6deg); opacity:0; } to { transform:scale(1) rotate(0deg); opacity:1; } }
+              .inset-sq { transform-origin:50px 50px; animation:slideIn 0.55s 0.15s cubic-bezier(0.34,1.56,0.64,1) both; }
+              @keyframes slideIn { from { transform:translate(10px,10px); opacity:0; } to { transform:translate(0,0); opacity:1; } }
+              .stripe { opacity:0; animation:fadeIn 0.3s ease forwards; }
+              .s1{animation-delay:.5s}.s2{animation-delay:.6s}.s3{animation-delay:.7s}.s4{animation-delay:.8s}.s5{animation-delay:.9s}.s6{animation-delay:1s}
+              @keyframes fadeIn { to { opacity:0.18; } }
+              .zz { stroke-dasharray:60; stroke-dashoffset:60; animation:draw 0.7s 0.3s cubic-bezier(0.4,0,0.2,1) forwards; }
+              @keyframes draw { to { stroke-dashoffset:0; } }
+              .dot-ping { transform-origin:78px 22px; animation:ping 2.2s ease-out infinite; }
+              @keyframes ping { 0%{opacity:1;transform:scale(1)} 70%{opacity:0;transform:scale(2.4)} 100%{opacity:0;transform:scale(2.4)} }
+              .icon-group { cursor:pointer; }
+              .icon-group:hover .outer-sq { animation:wobble 0.5s ease; }
+              @keyframes wobble { 0%{transform:rotate(0)} 25%{transform:rotate(-4deg)} 50%{transform:rotate(4deg)} 75%{transform:rotate(-2deg)} 100%{transform:rotate(0)} }
+            </style>
+            <clipPath id="bl-clip"><rect x="8" y="8" width="84" height="84"/></clipPath>
+          </defs>
+          <g class="icon-group">
+            <rect x="14" y="14" width="84" height="84" fill="#0d0d0d" opacity="0.15"/>
+            <rect class="outer-sq" x="8" y="8" width="84" height="84" fill="#FFE600" stroke="#0d0d0d" stroke-width="3"/>
+            <g clip-path="url(#bl-clip)">
+              <line class="stripe s1" x1="-5" y1="35" x2="55" y2="-5" stroke="#0d0d0d" stroke-width="2"/>
+              <line class="stripe s2" x1="-5" y1="58" x2="78" y2="-5" stroke="#0d0d0d" stroke-width="2"/>
+              <line class="stripe s3" x1="-5" y1="82" x2="95" y2="-5" stroke="#0d0d0d" stroke-width="2"/>
+              <line class="stripe s4" x1="8"  y1="96" x2="96" y2="8"  stroke="#0d0d0d" stroke-width="2"/>
+              <line class="stripe s5" x1="32" y1="96" x2="96" y2="32" stroke="#0d0d0d" stroke-width="2"/>
+              <line class="stripe s6" x1="58" y1="96" x2="96" y2="58" stroke="#0d0d0d" stroke-width="2"/>
+            </g>
+            <rect class="inset-sq" x="56" y="56" width="34" height="34" fill="#0d0d0d"/>
+            <polyline class="zz" points="8,62 20,48 32,62 44,48 56,62 68,48 80,62 92,50" fill="none" stroke="#0d0d0d" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="78" cy="22" r="9" fill="#39FF14" stroke="#0d0d0d" stroke-width="2.5"/>
+            <circle class="dot-ping" cx="78" cy="22" r="9" fill="none" stroke="#39FF14" stroke-width="2"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="bl-watermark" aria-hidden="true">{postCount}</div>
+    </section>
+
+    <section class="posts-section scroll-reveal">
+      <span class="section-label">// Build Log</span>
+      {posts.length > 0 ? (
+        <div class="posts-grid">
+          {posts.map(post => <PostCard post={post} />)}
+        </div>
+      ) : (
+        <p class="empty-state">No entries yet. Stay tuned.</p>
+      )}
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+.bl-hero {
+  position: relative;
+  background: var(--yellow);
+  border: 4px solid var(--black);
+  box-shadow: 10px 10px 0 var(--black);
+  padding: 44px 40px 40px;
+  margin: 40px 0 52px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Diagonal stripe texture overlay — echoes the icon */
+.bl-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 18px,
+    rgba(13,13,13,0.04) 18px, rgba(13,13,13,0.04) 20px
+  );
+  pointer-events: none;
+}
+
+.bl-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: rgba(13,13,13,0.6);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.bl-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: clamp(3.2rem, 9vw, 6rem);
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  color: var(--black);
+  margin-bottom: 24px;
+}
+
+.bl-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.bl-count-pill {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--black);
+  color: var(--yellow);
+  padding: 5px 14px;
+  border: 2px solid var(--black);
+}
+
+.bl-latest-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--black);
+  opacity: 0.65;
+}
+
+.bl-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-6deg);
+  filter: drop-shadow(5px 5px 0 rgba(13,13,13,0.25));
+  transition: transform 0.2s ease;
+}
+.bl-icon-wrap:hover {
+  transform: rotate(-2deg) scale(1.04);
+}
+
+/* Oversized watermark post count behind the text */
+.bl-watermark {
+  position: absolute;
+  bottom: -12px;
+  right: 200px;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(6rem, 16vw, 11rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 3px rgba(13,13,13,0.09);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.bl-hero-text {
+  position: relative;
+  z-index: 1;
+}
+
+.posts-section {
+  margin-bottom: 80px;
+}
+
+.posts-section .section-label {
+  margin-bottom: 28px;
+  display: inline-block;
+}
+
+.posts-grid {
+  margin-top: 20px;
+}
+
+.empty-state {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85rem;
+  color: rgba(13,13,13,0.5);
+  margin-top: 24px;
+  padding: 32px;
+  border: 2px dashed rgba(13,13,13,0.2);
+  text-align: center;
+}
+
+/* Scroll reveal */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s cubic-bezier(0.4,0,0.2,1), transform 0.55s cubic-bezier(0.4,0,0.2,1);
+}
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.posts-section.scroll-reveal {
+  transition-delay: 0.1s;
+}
+
+@media (max-width: 640px) {
+  .bl-hero {
+    grid-template-columns: 1fr;
+    padding: 32px 24px;
+    margin: 24px 0 40px;
+  }
+  .bl-icon-wrap { display: none; }
+  .bl-watermark { right: 16px; }
+  .bl-title { font-size: clamp(2.8rem, 14vw, 4rem); }
+}
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const revealEls = document.querySelectorAll('.scroll-reveal');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+      revealEls.forEach(el => {
+        el.classList.remove('is-visible');
+        observer.observe(el);
+      });
+    } else {
+      revealEls.forEach(el => el.classList.add('is-visible'));
+    }
+  });
+</script>
