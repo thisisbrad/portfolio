@@ -20,19 +20,27 @@ const recentByType: Record<PostType, CollectionEntry<'posts'>[]> = {
   'hard-won':   sorted.filter(p => p.data.type === 'hard-won').slice(0, 2),
 };
 
+// Monochrome icon SVGs for the mega menu symbol boxes.
+// No background rect (the .mega-symbol box provides it), currentColor for all
+// fills/strokes so each column's --col-dark value is inherited automatically.
+const blIcon = `<svg viewBox="0 0 100 100" width="100%" height="100%" overflow="hidden" aria-hidden="true"><defs><clipPath id="mn-bl-clip"><rect width="100" height="100"/></clipPath></defs><g clip-path="url(#mn-bl-clip)" opacity="0.18"><line x1="-5" y1="35" x2="55" y2="-5" stroke="currentColor" stroke-width="3"/><line x1="-5" y1="58" x2="78" y2="-5" stroke="currentColor" stroke-width="3"/><line x1="-5" y1="82" x2="95" y2="-5" stroke="currentColor" stroke-width="3"/><line x1="8" y1="96" x2="96" y2="8" stroke="currentColor" stroke-width="3"/><line x1="32" y1="96" x2="96" y2="32" stroke="currentColor" stroke-width="3"/><line x1="58" y1="96" x2="96" y2="58" stroke="currentColor" stroke-width="3"/></g><rect x="58" y="58" width="34" height="34" fill="currentColor"/><polyline points="8,62 20,48 32,62 44,48 56,62 68,48 80,62 92,50" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="78" cy="22" r="9" fill="currentColor"/></svg>`;
+const tsIcon = `<svg viewBox="0 0 100 100" width="100%" height="100%" aria-hidden="true"><circle cx="50" cy="50" r="36" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="50" cy="50" r="21" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="50" cy="50" r="8" fill="currentColor"/><line x1="50" y1="4" x2="50" y2="11" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="50" y1="89" x2="50" y2="96" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="4" y1="50" x2="11" y2="50" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="89" y1="50" x2="96" y2="50" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>`;
+const drIcon = `<svg viewBox="0 0 100 100" width="100%" height="100%" aria-hidden="true"><rect x="8" y="8" width="16" height="10" fill="currentColor"/><rect x="30" y="8" width="16" height="10" fill="currentColor"/><rect x="52" y="8" width="16" height="10" fill="currentColor"/><rect x="74" y="8" width="16" height="10" fill="currentColor" opacity="0.3"/><polyline points="12,72 50,34 88,72" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><polyline points="12,88 50,50 88,88" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.25"/><circle cx="18" cy="82" r="7" fill="currentColor"/></svg>`;
+const hwIcon = `<svg viewBox="0 0 100 100" width="100%" height="100%" overflow="hidden" aria-hidden="true"><rect x="28" y="76" width="28" height="12" fill="currentColor"/><rect x="28" y="62" width="28" height="12" fill="currentColor"/><rect x="28" y="48" width="28" height="12" fill="currentColor"/><rect x="28" y="34" width="28" height="12" fill="currentColor"/><rect x="28" y="20" width="28" height="12" fill="currentColor"/><polygon points="56,94 94,94 94,56" fill="currentColor"/><rect x="8" y="18" width="32" height="32" fill="currentColor" opacity="0.28" transform="rotate(-8 24 34)"/><circle cx="42" cy="18" r="14" fill="none" stroke="currentColor" stroke-width="3.5"/><circle cx="42" cy="18" r="6" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="42" cy="18" r="2.5" fill="currentColor"/><line x1="62" y1="12" x2="14" y2="72" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/></svg>`;
+
 const writingTypes: Array<{
   key: PostType;
   label: string;
   color: string;
   dark: string;
-  symbol: string;
+  icon: string;
   tagline: string;
   href: string;
 }> = [
-  { key: 'build-log',  label: 'Build Log',  color: '#ffe600', dark: '#0d0d0d', symbol: '#',  tagline: 'The work, step by step.',    href: '/writing/build-log' },
-  { key: 'the-search', label: 'The Search', color: '#ff4d6a', dark: '#f5f0e8', symbol: '◉',  tagline: 'Job hunting, raw and real.', href: '/writing/the-search' },
-  { key: 'dev-return', label: 'Dev Return', color: '#00e5ff', dark: '#0d0d0d', symbol: '↺',  tagline: 'Coming back to the craft.',  href: '/writing/dev-return' },
-  { key: 'hard-won',   label: 'Hard Won',   color: '#ff7a00', dark: '#0d0d0d', symbol: '✦',  tagline: 'Lessons the hard way.',      href: '/writing/hard-won' },
+  { key: 'build-log',  label: 'Build Log',  color: '#ffe600', dark: '#0d0d0d', icon: blIcon, tagline: 'The work, step by step.',    href: '/writing/build-log' },
+  { key: 'the-search', label: 'The Search', color: '#ff4d6a', dark: '#f5f0e8', icon: tsIcon, tagline: 'Job hunting, raw and real.', href: '/writing/the-search' },
+  { key: 'dev-return', label: 'Dev Return', color: '#00e5ff', dark: '#0d0d0d', icon: drIcon, tagline: 'Coming back to the craft.',  href: '/writing/dev-return' },
+  { key: 'hard-won',   label: 'Hard Won',   color: '#ff7a00', dark: '#0d0d0d', icon: hwIcon, tagline: 'Lessons the hard way.',      href: '/writing/hard-won' },
 ];
 
 const projectTypes = [
@@ -67,7 +75,7 @@ const projectTypes = [
                 style={`--col-accent:${type.color};--col-dark:${type.dark}`}
               >
                 <a class="mega-col-head" href={type.href}>
-                  <span class="mega-symbol">{type.symbol}</span>
+                  <span class="mega-symbol" set:html={type.icon}></span>
                   <span class="mega-type-name">{type.label}</span>
                 </a>
                 <p class="mega-tagline">{type.tagline}</p>
@@ -266,9 +274,6 @@ const projectTypes = [
 }
 
 .mega-symbol {
-  font-family: 'Space Mono', monospace;
-  font-size: 1.4rem;
-  font-weight: 700;
   background: var(--col-accent);
   color: var(--col-dark);
   width: 46px;
@@ -280,6 +285,14 @@ const projectTypes = [
   box-shadow: 3px 3px 0 var(--black);
   flex-shrink: 0;
   transition: transform 0.12s, box-shadow 0.12s;
+  padding: 5px;
+  overflow: hidden;
+}
+
+.mega-symbol svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .mega-type-name {
