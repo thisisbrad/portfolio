@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PostCard from '../../../components/PostCard.astro';
+import TagFilter from '../../../components/TagFilter.astro';
 
 const posts = (await getCollection('posts'))
   .filter(p => p.data.type === 'dev-return')
@@ -85,9 +86,21 @@ const filledPips = Math.min(latestEntry ?? 0, MAX_PIPS);
     <section class="posts-section scroll-reveal">
       <span class="section-label">// Dev Return</span>
       {posts.length > 0 ? (
-        <div class="posts-grid">
-          {posts.map(post => <PostCard post={post} />)}
-        </div>
+        <>
+          <TagFilter posts={posts} accent="cyan" />
+          <div class="posts-grid" data-posts-grid>
+            {posts.map(post => (
+              <div
+                data-post-item
+                data-tags={post.data.tags.join(',')}
+                data-date={post.data.date.valueOf()}
+              >
+                <PostCard post={post} />
+              </div>
+            ))}
+          </div>
+          <button class="load-more-btn" data-load-more hidden>Show more →</button>
+        </>
       ) : (
         <p class="empty-state">No entries yet. Stay tuned.</p>
       )}
@@ -193,6 +206,25 @@ const filledPips = Math.min(latestEntry ?? 0, MAX_PIPS);
 .posts-grid {
   margin-top: 20px;
 }
+
+.load-more-btn {
+  display: block;
+  margin: 28px auto 0;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  padding: 10px 24px;
+  border: 2px solid var(--black);
+  background: var(--cyan);
+  color: var(--black);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.load-more-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--black);
+}
+.load-more-btn[hidden] { display: none; }
 
 .empty-state {
   font-family: 'Space Mono', monospace;

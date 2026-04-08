@@ -1,0 +1,328 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+  accent: 'yellow' | 'coral' | 'cyan' | 'orange';
+  defaultLimit?: number;
+}
+
+const { posts, accent, defaultLimit = 8 } = Astro.props;
+
+// Collect unique tags with per-tag post counts
+const tagCounts = new Map<string, number>();
+for (const post of posts) {
+  for (const tag of post.data.tags) {
+    tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+  }
+}
+// Sort by frequency desc, then alphabetical
+const tags = [...tagCounts.entries()].sort(
+  (a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
+);
+const total = posts.length;
+---
+
+{tags.length > 0 && (
+  <div class="tf-wrapper" data-tf-accent={accent} data-default-limit={defaultLimit}>
+    <div class="tf-bar">
+      <div class="tf-tags" role="group" aria-label="Filter by tag">
+        <button class="tf-tag is-active" data-tag="">
+          All <span class="tf-badge">{total}</span>
+        </button>
+        {tags.map(([tag, count]) => (
+          <button class="tf-tag" data-tag={tag}>
+            {tag} <span class="tf-badge">{count}</span>
+          </button>
+        ))}
+      </div>
+      <div class="tf-sort-group" role="group" aria-label="Sort order">
+        <button class="tf-sort-btn is-active" data-sort="newest">Newest</button>
+        <button class="tf-sort-btn" data-sort="oldest">Oldest</button>
+      </div>
+    </div>
+    <p class="tf-meta">
+      Showing <strong class="tf-result-count">{total}</strong>&nbsp;<span class="tf-result-word">{total === 1 ? 'post' : 'posts'}</span>
+    </p>
+  </div>
+)}
+
+<style>
+.tf-wrapper {
+  margin-bottom: 28px;
+}
+
+.tf-bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.tf-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  flex: 1;
+  min-width: 0;
+}
+
+.tf-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border: 2px solid var(--black);
+  background: transparent;
+  color: var(--black);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.tf-tag:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0 var(--black);
+}
+
+.tf-tag:active {
+  transform: translate(0, 0);
+  box-shadow: none;
+}
+
+/* Active accent per type */
+[data-tf-accent="yellow"] .tf-tag.is-active {
+  background: var(--yellow);
+  color: var(--black);
+}
+[data-tf-accent="coral"] .tf-tag.is-active {
+  background: var(--coral);
+  color: var(--black);
+}
+[data-tf-accent="cyan"] .tf-tag.is-active {
+  background: var(--cyan);
+  color: var(--black);
+}
+[data-tf-accent="orange"] .tf-tag.is-active {
+  background: var(--orange);
+  color: var(--black);
+}
+
+.tf-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 400;
+  background: rgba(13, 13, 13, 0.1);
+  padding: 1px 5px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Sort toggle — two buttons fused into a single bordered unit */
+.tf-sort-group {
+  display: flex;
+  border: 2px solid var(--black);
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.tf-sort-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  padding: 5px 11px;
+  border: none;
+  background: transparent;
+  color: rgba(13, 13, 13, 0.45);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  line-height: 1;
+}
+
+.tf-sort-btn + .tf-sort-btn {
+  border-left: 2px solid var(--black);
+}
+
+.tf-sort-btn.is-active {
+  background: var(--black);
+  color: #f5f0e8;
+}
+
+/* Result count */
+.tf-meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  color: rgba(13, 13, 13, 0.4);
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .tf-sort-group {
+    display: none;
+  }
+  .tf-tag {
+    font-size: 0.63rem;
+    padding: 4px 8px;
+  }
+}
+</style>
+
+<script>
+  // ─── Tag + Sort + Limit filter ───────────────────────────────────────────────
+  //
+  // SSR MIGRATION GUIDE (when post count exceeds ~20):
+  //
+  // 1. In the section page frontmatter, add:
+  //      export const prerender = false;
+  //
+  // 2. Read URL params server-side:
+  //      const tag  = Astro.url.searchParams.get('tag')  ?? '';
+  //      const sort = Astro.url.searchParams.get('sort') ?? 'newest';
+  //      const page = parseInt(Astro.url.searchParams.get('page') ?? '1');
+  //      const PER_PAGE = 8;
+  //
+  // 3. Apply filter/sort/slice to the posts array before rendering:
+  //      const filtered = tag ? posts.filter(p => p.data.tags.includes(tag)) : posts;
+  //      const sorted   = sort === 'oldest' ? [...filtered].reverse() : filtered;
+  //      const paged    = sorted.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+  //      const pageCount = Math.ceil(filtered.length / PER_PAGE);
+  //
+  // 4. Pass `paged` to the PostCard loop and render prev/next links:
+  //      {page > 1 && <a href={`?tag=${tag}&sort=${sort}&page=${page - 1}`}>← Prev</a>}
+  //      {page < pageCount && <a href={`?tag=${tag}&sort=${sort}&page=${page + 1}`}>Next →</a>}
+  //
+  // 5. Remove this entire <script> block — the server handles filtering.
+  //    URL params (?tag=node.js&sort=oldest) remain identical, so bookmarked
+  //    and shared links keep working without any client-side change.
+  //
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLElement>('.tf-wrapper').forEach(wrapper => {
+      const section = wrapper.closest('section');
+      if (!section) return;
+
+      const grid = section.querySelector<HTMLElement>('[data-posts-grid]');
+      const loadMoreBtn = section.querySelector<HTMLButtonElement>('[data-load-more]');
+      if (!grid) return;
+
+      const defaultLimit = parseInt(wrapper.dataset.defaultLimit ?? '8');
+      let activeTag  = '';
+      let activeSort = 'newest';
+      let showCount  = defaultLimit;
+
+      // Sync initial state from URL params (shareable filtered links)
+      const params = new URLSearchParams(window.location.search);
+      activeTag  = params.get('tag')  ?? '';
+      activeSort = params.get('sort') ?? 'newest';
+
+      function getItems(): HTMLElement[] {
+        return [...grid!.querySelectorAll<HTMLElement>('[data-post-item]')];
+      }
+
+      function updateURL() {
+        const p = new URLSearchParams();
+        if (activeTag)              p.set('tag',  activeTag);
+        if (activeSort !== 'newest') p.set('sort', activeSort);
+        const qs = p.toString();
+        history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
+      }
+
+      function render() {
+        const allItems = getItems();
+
+        // 1. Filter by active tag
+        const filtered = activeTag
+          ? allItems.filter(el => {
+              const tags = (el.dataset.tags ?? '').split(',').map(t => t.trim());
+              return tags.includes(activeTag);
+            })
+          : allItems;
+
+        // 2. Sort by date
+        const sorted = [...filtered].sort((a, b) => {
+          const da = parseInt(a.dataset.date ?? '0');
+          const db = parseInt(b.dataset.date ?? '0');
+          return activeSort === 'newest' ? db - da : da - db;
+        });
+
+        // 3. Apply per-page limit (only when showing all, i.e. no active tag)
+        const usingLimit = !activeTag;
+        const visible    = usingLimit ? sorted.slice(0, showCount) : sorted;
+
+        // 4. Update DOM — hide all, then reveal visible set with correct order
+        allItems.forEach(el => {
+          el.hidden = true;
+          el.style.order = '';
+        });
+        sorted.forEach((el, i) => {
+          el.style.order = String(i);
+        });
+        visible.forEach(el => {
+          el.hidden = false;
+        });
+
+        // 5. Update result count summary
+        const countEl = wrapper.querySelector('.tf-result-count');
+        const wordEl  = wrapper.querySelector('.tf-result-word');
+        if (countEl) countEl.textContent = String(filtered.length);
+        if (wordEl)  wordEl.textContent  = filtered.length === 1 ? 'post' : 'posts';
+
+        // 6. Load-more button
+        if (loadMoreBtn) {
+          const remaining = sorted.length - visible.length;
+          if (usingLimit && remaining > 0) {
+            loadMoreBtn.hidden = false;
+            const next = Math.min(remaining, defaultLimit);
+            loadMoreBtn.textContent = `Show ${next} more →`;
+          } else {
+            loadMoreBtn.hidden = true;
+          }
+        }
+
+        // 7. Sync button active states
+        wrapper.querySelectorAll<HTMLElement>('.tf-tag').forEach(btn => {
+          btn.classList.toggle('is-active', btn.dataset.tag === activeTag);
+        });
+        wrapper.querySelectorAll<HTMLElement>('.tf-sort-btn').forEach(btn => {
+          btn.classList.toggle('is-active', btn.dataset.sort === activeSort);
+        });
+
+        updateURL();
+      }
+
+      // Tag clicks
+      wrapper.querySelectorAll<HTMLElement>('.tf-tag').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeTag  = btn.dataset.tag ?? '';
+          showCount  = defaultLimit; // reset limit when filter changes
+          render();
+        });
+      });
+
+      // Sort clicks
+      wrapper.querySelectorAll<HTMLElement>('.tf-sort-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeSort = btn.dataset.sort ?? 'newest';
+          render();
+        });
+      });
+
+      // Load more
+      loadMoreBtn?.addEventListener('click', () => {
+        showCount += defaultLimit;
+        render();
+      });
+
+      // Initial render (applies any URL params on page load)
+      render();
+    });
+  });
+</script>
