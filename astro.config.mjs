@@ -6,7 +6,7 @@ import bradDevTheme from "./src/styles/brad-dev-theme.json";
 export default defineConfig({
   integrations: [mdx()],
   adapter: cloudflare(),
-  output: "hybrid", // or 'hybrid' if you want static + SSR
+  output: "static", // or 'hybrid' if you want static + SSR
   markdown: {
     shikiConfig: {
       theme: bradDevTheme,
