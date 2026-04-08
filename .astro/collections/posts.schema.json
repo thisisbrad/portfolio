@@ -1,82 +1,64 @@
 {
-  "$ref": "#/definitions/posts",
-  "definitions": {
-    "posts": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string",
-          "enum": [
-            "build-log",
-            "the-search",
-            "dev-return",
-            "hard-won"
-          ]
-        },
-        "date": {
-          "anyOf": [
-            {
-              "type": "string",
-              "format": "date-time"
-            },
-            {
-              "type": "string",
-              "format": "date"
-            },
-            {
-              "type": "integer",
-              "format": "unix-time"
-            }
-          ]
-        },
-        "readTime": {
-          "type": "string"
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "excerpt": {
-          "type": "string"
-        },
-        "logNumber": {
-          "type": "number"
-        },
-        "seriesEntry": {
-          "type": "number"
-        },
-        "seriesTotal": {
-          "type": "number"
-        },
-        "lessonNumber": {
-          "type": "number"
-        },
-        "subtitle": {
-          "type": "string"
-        },
-        "featured": {
-          "type": "boolean",
-          "default": false
-        },
-        "$schema": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "title",
-        "type",
-        "date",
-        "readTime",
-        "tags",
-        "excerpt"
-      ],
-      "additionalProperties": false
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "build-log",
+        "the-search",
+        "dev-return",
+        "hard-won"
+      ]
+    },
+    "date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "readTime": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "excerpt": {
+      "type": "string"
+    },
+    "logNumber": {
+      "type": "number"
+    },
+    "seriesEntry": {
+      "type": "number"
+    },
+    "seriesTotal": {
+      "type": "number"
+    },
+    "lessonNumber": {
+      "type": "number"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "featured": {
+      "default": false,
+      "type": "boolean"
+    },
+    "$schema": {
+      "type": "string"
     }
   },
-  "$schema": "http://json-schema.org/draft-07/schema#"
+  "required": [
+    "title",
+    "type",
+    "date",
+    "readTime",
+    "tags",
+    "excerpt"
+  ]
 }
