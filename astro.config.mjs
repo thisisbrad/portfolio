@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
+import cloudflare from "@astrojs/cloudflare";
 import bradDevTheme from "./src/styles/brad-dev-theme.json";
 
 export default defineConfig({
