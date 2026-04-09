@@ -6,6 +6,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="About — BRAD.DEV"
   description="A decade of teaching, building, and leading. Full-stack developer, former educator, perpetual tinkerer."
   activeLink="about"
+  type="about"
 >
   <div class="site-wrapper">
 
@@ -340,16 +341,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 /* ---- Timeline ---------------------------------------------- */
 .timeline {
-  display: block;
   border-left: 4px solid var(--black);
+  padding-left: 32px;
   margin-left: 12px;
-  width: 100%;
 }
 
 .tl-item {
   position: relative;
   padding-bottom: 40px;
-  width: 100%;
 }
 
 .tl-item:last-child {
@@ -358,14 +357,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 .tl-marker {
   position: absolute;
-  left: -10px;
+  left: -42px;
   top: 4px;
   width: 16px;
   height: 16px;
   background: var(--black);
   border: 3px solid var(--white);
   outline: 3px solid var(--black);
-  flex-shrink: 0;
 }
 
 .tl-marker--cyan   { background: var(--cyan); }
@@ -374,7 +372,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 .tl-marker--orange { background: var(--orange); }
 
 .tl-content {
-  padding-left: 32px;
+  /* content width flows naturally from the parent block */
 }
 
 .tl-year {

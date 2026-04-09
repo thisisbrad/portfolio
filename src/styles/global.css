@@ -43,11 +43,12 @@ body.theme-hardwon {
   --accent-dark: var(--black);
 }
 
-/* Post pages: replace busy home-page pattern with a subtle dot grid */
+/* Post/about pages: replace busy home-page pattern with a subtle dot grid */
 body.theme-buildlog::before,
 body.theme-search::before,
 body.theme-devreturn::before,
-body.theme-hardwon::before {
+body.theme-hardwon::before,
+body.theme-about::before {
   background-image: radial-gradient(
     circle,
     rgba(13, 13, 13, 0.07) 1.5px,

@@ -8,7 +8,7 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
-  type?: 'build-log' | 'the-search' | 'dev-return' | 'hard-won';
+  type?: 'build-log' | 'the-search' | 'dev-return' | 'hard-won' | 'about';
   activeLink?: 'writing' | 'projects' | 'stack' | 'about';
   ogImage?: string;
   pubDate?: Date;
@@ -33,6 +33,7 @@ const themeClassMap: Record<string, string> = {
   'the-search': 'theme-search',
   'dev-return': 'theme-devreturn',
   'hard-won':   'theme-hardwon',
+  'about':      'theme-about',
 };
 const themeClass = type ? (themeClassMap[type] ?? '') : '';
 ---
