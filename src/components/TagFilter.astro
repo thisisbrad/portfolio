@@ -253,9 +253,9 @@ const total = posts.length;
           return activeSort === 'newest' ? db - da : da - db;
         });
 
-        // 3. Apply per-page limit (only when showing all, i.e. no active tag)
-        const usingLimit = !activeTag;
-        const visible    = usingLimit ? sorted.slice(0, showCount) : sorted;
+        // 3. Apply per-page limit (always, regardless of active tag)
+        const usingLimit = true;
+        const visible    = sorted.slice(0, showCount);
 
         // 4. Update DOM — hide all, then reveal visible set with correct order
         allItems.forEach(el => {

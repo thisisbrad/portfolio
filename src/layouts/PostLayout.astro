@@ -28,7 +28,7 @@ const {
 } = post.data;
 ---
 
-<BaseLayout title={`${title} — BRAD.DEV`} description={excerpt} type={type}>
+<BaseLayout title={`${title} — BRAD.DEV`} description={excerpt} type={type} pubDate={date} tags={tags}>
   <div class="page">
     {type === 'build-log' && (
       <BuildLogHeader
@@ -75,7 +75,7 @@ const {
     {(prevPost || nextPost) && (
       <nav class="post-nav" aria-label="Post navigation">
         {prevPost ? (
-          <a class="post-nav-item prev" href={`/posts/${prevPost.slug}`}>
+          <a class="post-nav-item prev" href={`/posts/${prevPost.id.replace(/\.(md|mdx)$/, '')}`}>
             <span class="pn-dir">&larr; Previous</span>
             <span class="pn-title">{prevPost.data.title}</span>
           </a>
@@ -83,7 +83,7 @@ const {
           <div></div>
         )}
         {nextPost ? (
-          <a class="post-nav-item next" href={`/posts/${nextPost.slug}`}>
+          <a class="post-nav-item next" href={`/posts/${nextPost.id.replace(/\.(md|mdx)$/, '')}`}>
             <span class="pn-dir">Next &rarr;</span>
             <span class="pn-title">{nextPost.data.title}</span>
           </a>

@@ -54,6 +54,10 @@ const projectTypes = [
   <div class={`nav-inner${wide ? ' nav-inner--wide' : ''}`}>
     <a class="nav-logo" href="/">THISISBRAD.DEV</a>
 
+    <button class="mobile-menu-btn" aria-label="Open menu" aria-controls="mobile-drawer" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
     <ul class="nav-links">
 
       <!-- Writing — mega menu -->
@@ -84,7 +88,7 @@ const projectTypes = [
                   <ul class="mega-posts">
                     {recentByType[type.key].map(post => (
                       <li>
-                        <a href={`/posts/${post.slug}`} class="mega-post-link">
+                        <a href={`/posts/${post.id.replace(/\.(md|mdx)$/, '')}`} class="mega-post-link">
                           <span class="mega-post-arrow">›</span>
                           <span>{post.data.title}</span>
                         </a>
@@ -135,15 +139,33 @@ const projectTypes = [
       <!-- Plain links -->
       <!-- <li>
         <a href="/stack" class={activeLink === 'stack' ? 'active' : ''}>Stack</a>
-      </li>
+      </li> -->
       <li>
         <a href="/about" class={activeLink === 'about' ? 'active' : ''}>About</a>
       </li>
       <li>
-        <a href="/rss.xml">RSS</a>
-      </li> -->
+        <a href="/rss.xml" aria-label="RSS feed">RSS</a>
+      </li>
 
     </ul>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
+    {writingTypes.map(type => (
+      <a
+        class="mobile-drawer-link"
+        href={type.href}
+        style={`--col-accent:${type.color};--col-dark:${type.dark}`}
+      >
+        <span class="mobile-drawer-symbol" set:html={type.icon}></span>
+        <span class="mobile-drawer-text">
+          <span class="mobile-drawer-label">{type.label}</span>
+          <span class="mobile-drawer-tagline">{type.tagline}</span>
+        </span>
+        <span class="mobile-drawer-arrow">→</span>
+      </a>
+    ))}
   </div>
 </nav>
 
@@ -486,22 +508,176 @@ const projectTypes = [
 }
 
 /* ----------------------------------------------------------------
-   Mobile — hide menus, show plain links
+   Mobile hamburger button
    ---------------------------------------------------------------- */
+.mobile-menu-btn {
+  display: none;
+}
+
 @media (max-width: 640px) {
-  .mega-panel,
-  .dropdown-panel {
+  .nav-links {
     display: none;
   }
 
-  .nav-chevron {
-    display: none;
+  .mobile-menu-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: 2px solid var(--black);
+    cursor: pointer;
+    padding: 6px;
+    flex-shrink: 0;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  .mobile-menu-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 var(--black);
+  }
+
+  .mobile-menu-btn span {
+    display: block;
+    height: 2px;
+    background: var(--black);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    transform-origin: center;
+  }
+
+  /* X state when open */
+  .mobile-menu-btn[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .mobile-menu-btn[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+  .mobile-menu-btn[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+}
+
+/* ----------------------------------------------------------------
+   Mobile drawer
+   ---------------------------------------------------------------- */
+.mobile-drawer {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .mobile-drawer {
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border-top: 3px solid var(--black);
+    border-bottom: 3px solid var(--black);
+
+    /* hidden by default */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-drawer.is-open {
+    max-height: 400px;
+  }
+
+  .mobile-drawer-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    border-bottom: 2px solid rgba(13, 13, 13, 0.1);
+    text-decoration: none;
+    color: var(--black);
+    border-left: 5px solid var(--col-accent);
+    transition: background 0.12s;
+  }
+
+  .mobile-drawer-link:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-drawer-link:hover {
+    background: color-mix(in srgb, var(--col-accent) 12%, var(--white));
+  }
+
+  .mobile-drawer-symbol {
+    background: var(--col-accent);
+    color: var(--col-dark);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--black);
+    flex-shrink: 0;
+    padding: 4px;
+  }
+
+  .mobile-drawer-symbol svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .mobile-drawer-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .mobile-drawer-label {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--black);
+  }
+
+  .mobile-drawer-tagline {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(13, 13, 13, 0.5);
+    line-height: 1.3;
+  }
+
+  .mobile-drawer-arrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--col-accent);
+    flex-shrink: 0;
   }
 }
 </style>
 
 <script>
   function initNav() {
+    // Mobile hamburger
+    const mobileBtn    = document.querySelector<HTMLButtonElement>('.mobile-menu-btn');
+    const mobileDrawer = document.querySelector<HTMLElement>('.mobile-drawer');
+    if (mobileBtn && mobileDrawer) {
+      mobileBtn.addEventListener('click', () => {
+        const isOpen = mobileDrawer.classList.toggle('is-open');
+        mobileBtn.setAttribute('aria-expanded', String(isOpen));
+        mobileDrawer.setAttribute('aria-hidden', String(!isOpen));
+      });
+
+      // Close drawer when a link inside it is clicked
+      mobileDrawer.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileDrawer.classList.remove('is-open');
+          mobileBtn.setAttribute('aria-expanded', 'false');
+          mobileDrawer.setAttribute('aria-hidden', 'true');
+        });
+      });
+    }
+
     const items = document.querySelectorAll<HTMLElement>('.has-mega, .has-dropdown');
 
     items.forEach(item => {
