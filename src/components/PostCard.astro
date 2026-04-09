@@ -48,7 +48,7 @@ void seriesEntry;
 ---
 
 {featured ? (
-  <a class={`post-card ${color} featured`} href={`/posts/${post.slug}`}>
+  <a class={`post-card ${color} featured`} href={`/posts/${post.id.replace(/\.(md|mdx)$/, '')}`}>
     <div class="featured-geo">
       {type === 'build-log' ? '{ }' : type === 'the-search' ? '?' : '\u2694'}
     </div>
@@ -63,7 +63,7 @@ void seriesEntry;
     </div>
   </a>
 ) : (
-  <a class={`post-card ${color}`} href={`/posts/${post.slug}`}>
+  <a class={`post-card ${color}`} href={`/posts/${post.id.replace(/\.(md|mdx)$/, '')}`}>
     <span class={`post-pill ${pillClass}`}>{pillLabel}</span>
     <h2>{title}</h2>
     <p>{excerpt}</p>
