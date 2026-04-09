@@ -1,0 +1,502 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// ── Edit your side projects here ─────────────────────────────────────────────
+interface Project {
+  title: string;
+  description: string;
+  tech: string[];
+  status: 'live' | 'wip' | 'archived';
+  url?: string;
+  repo?: string;
+  year: number;
+}
+
+const projects: Project[] = [
+  {
+    title: 'THISISBRAD.DEV',
+    description: 'The very site you\'re on. A Memphis Neo-Brutalist portfolio and dev blog built with Astro, deployed to Cloudflare Pages. Zero frameworks, maximum personality.',
+    tech: ['Astro', 'TypeScript', 'CSS', 'Cloudflare'],
+    status: 'live',
+    url: 'https://thisisbrad.dev',
+    repo: '#',
+    year: 2025,
+  },
+  {
+    title: 'Classroom CLI',
+    description: 'A terminal tool for managing student rosters, attendance, and grades. Built during the teaching years when spreadsheets stopped cutting it.',
+    tech: ['Node.js', 'TypeScript', 'SQLite'],
+    status: 'archived',
+    url: undefined,
+    repo: '#',
+    year: 2019,
+  },
+  {
+    title: 'Job Hunt Tracker',
+    description: 'A local-first app for tracking job applications, interview stages, and follow-ups. Built during a career pivot when spreadsheets stopped cutting it (again).',
+    tech: ['React', 'Vite', 'TypeScript', 'localStorage'],
+    status: 'wip',
+    url: undefined,
+    repo: '#',
+    year: 2024,
+  },
+];
+// ─────────────────────────────────────────────────────────────────────────────
+
+const liveCount = projects.filter(p => p.status === 'live').length;
+---
+
+<BaseLayout
+  title="Side Projects — BRAD.DEV"
+  description="Things built for fun, from scratch. Personal projects spanning a decade of evenings and weekends."
+  type="projects"
+  activeLink="projects"
+>
+  <div class="site-wrapper">
+
+    <!-- Hero -->
+    <section class="sp-hero scroll-reveal">
+      <div class="sp-hero-text">
+        <a href="/projects" class="sp-back">← All Projects</a>
+        <span class="sp-eyebrow">// Things built for fun, from scratch.</span>
+        <h1 class="sp-title">SIDE<br />PROJ<br />ECTS</h1>
+        <div class="sp-meta-row">
+          <span class="sp-count-pill">{projects.length} projects</span>
+          {liveCount > 0 && (
+            <span class="sp-live-badge">
+              <span class="sp-live-dot"></span>
+              {liveCount} live
+            </span>
+          )}
+        </div>
+      </div>
+
+      <!-- Memphis decoration -->
+      <div class="sp-deco" aria-hidden="true">
+        <div class="sp-deco-sq sp-deco-sq--1"></div>
+        <div class="sp-deco-sq sp-deco-sq--2"></div>
+        <div class="sp-deco-dot"></div>
+      </div>
+
+      <div class="sp-watermark" aria-hidden="true">{projects.length}</div>
+    </section>
+
+    <!-- Projects Grid -->
+    <section class="projects-section scroll-reveal">
+      <span class="section-label">// Side Projects</span>
+      <div class="projects-grid">
+        {projects.map(p => (
+          <article class={`proj-card${p.status === 'archived' ? ' proj-card--archived' : ''}`}>
+
+            <!-- Top row: status + year -->
+            <div class="proj-card-top">
+              <span class={`proj-status proj-status--${p.status}`}>
+                {p.status === 'live' ? '■ Live' : p.status === 'wip' ? '◐ WIP' : '○ Archived'}
+              </span>
+              <span class="proj-year">{p.year}</span>
+            </div>
+
+            <h2 class="proj-title">{p.title}</h2>
+            <p class="proj-desc">{p.description}</p>
+
+            <div class="proj-tech">
+              {p.tech.map(t => <span class="tech-pill">{t}</span>)}
+            </div>
+
+            <div class="proj-links">
+              {p.url && (
+                <a href={p.url} class="proj-link proj-link--primary" target="_blank" rel="noopener">
+                  Live →
+                </a>
+              )}
+              {p.repo && p.repo !== '#' && (
+                <a href={p.repo} class="proj-link" target="_blank" rel="noopener">
+                  GitHub ↗
+                </a>
+              )}
+            </div>
+
+          </article>
+        ))}
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+/* ---- Hero ---- */
+.sp-hero {
+  position: relative;
+  background: var(--yellow);
+  border: 4px solid var(--black);
+  box-shadow: 10px 10px 0 var(--black);
+  padding: 44px 40px 40px;
+  margin: 40px 0 52px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 24px;
+}
+
+/* Diagonal stripe texture */
+.sp-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 18px,
+    rgba(13,13,13,0.04) 18px, rgba(13,13,13,0.04) 20px
+  );
+  pointer-events: none;
+}
+
+.sp-back {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: rgba(13,13,13,0.55);
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 14px;
+  transition: color 0.12s;
+}
+.sp-back:hover { color: var(--black); }
+
+.sp-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: rgba(13,13,13,0.6);
+  display: block;
+  margin-bottom: 10px;
+}
+
+.sp-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: clamp(3rem, 9vw, 5.5rem);
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  color: var(--black);
+  margin-bottom: 24px;
+}
+
+.sp-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sp-count-pill {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--black);
+  color: var(--yellow);
+  padding: 5px 14px;
+}
+
+.sp-live-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.75;
+}
+
+.sp-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  border: 1.5px solid var(--black);
+  animation: pulse 2s ease-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.6); }
+  50% { box-shadow: 0 0 0 5px rgba(57, 255, 20, 0); }
+}
+
+/* Memphis deco shapes */
+.sp-deco {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  flex-shrink: 0;
+  margin-top: 16px;
+}
+
+.sp-deco-sq {
+  position: absolute;
+  border: 4px solid var(--black);
+}
+
+.sp-deco-sq--1 {
+  width: 80px;
+  height: 80px;
+  background: var(--black);
+  top: 0;
+  right: 0;
+  transform: rotate(-8deg);
+}
+
+.sp-deco-sq--2 {
+  width: 60px;
+  height: 60px;
+  background: var(--white);
+  bottom: 0;
+  left: 0;
+  transform: rotate(12deg);
+  box-shadow: 5px 5px 0 var(--black);
+}
+
+.sp-deco-dot {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--cyan);
+  border: 3px solid var(--black);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.sp-watermark {
+  position: absolute;
+  bottom: -14px;
+  right: 180px;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(6rem, 16vw, 11rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 3px rgba(13,13,13,0.08);
+  pointer-events: none;
+  user-select: none;
+}
+
+.sp-hero-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Projects grid ---- */
+.projects-section {
+  margin-bottom: 80px;
+}
+
+.projects-section .section-label {
+  margin-bottom: 28px;
+  display: inline-block;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0;
+  border: 3px solid var(--black);
+  box-shadow: 6px 6px 0 var(--black);
+}
+
+/* ---- Project card ---- */
+.proj-card {
+  padding: 28px;
+  border-right: 2px solid var(--black);
+  border-bottom: 2px solid var(--black);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--white);
+  transition: background 0.15s;
+  cursor: crosshair;
+  position: relative;
+}
+
+/* Yellow top accent strip */
+.proj-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: var(--yellow);
+}
+
+.proj-card:hover {
+  background: color-mix(in srgb, var(--yellow) 6%, var(--white));
+}
+
+.proj-card--archived {
+  opacity: 0.72;
+}
+
+.proj-card--archived::before {
+  background: rgba(13,13,13,0.2);
+}
+
+.proj-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px; /* clear the top strip */
+}
+
+.proj-status {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border: 1.5px solid currentColor;
+}
+
+.proj-status--live {
+  color: #1a7a00;
+  background: rgba(57, 255, 20, 0.15);
+  border-color: #1a7a00;
+}
+
+.proj-status--wip {
+  color: var(--orange);
+  background: rgba(255, 122, 0, 0.1);
+  border-color: var(--orange);
+}
+
+.proj-status--archived {
+  color: rgba(13,13,13,0.45);
+  border-color: currentColor;
+}
+
+.proj-year {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  color: rgba(13,13,13,0.4);
+}
+
+.proj-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--black);
+}
+
+.proj-desc {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(13,13,13,0.7);
+  flex: 1;
+}
+
+.proj-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tech-pill {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border: 1.5px solid rgba(13,13,13,0.3);
+  color: rgba(13,13,13,0.65);
+  background: transparent;
+}
+
+.proj-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  border-top: 2px solid rgba(13,13,13,0.1);
+  margin-top: auto;
+}
+
+.proj-link {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  padding: 6px 14px;
+  border: 2px solid var(--black);
+  color: var(--black);
+  background: transparent;
+  box-shadow: 3px 3px 0 var(--black);
+  transition: transform 0.1s, box-shadow 0.1s;
+  cursor: crosshair;
+}
+
+.proj-link:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--black);
+}
+
+.proj-link--primary {
+  background: var(--yellow);
+}
+
+/* ---- Scroll reveal ---- */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s cubic-bezier(0.4,0,0.2,1), transform 0.55s cubic-bezier(0.4,0,0.2,1);
+}
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.projects-section.scroll-reveal { transition-delay: 0.1s; }
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+  .sp-hero {
+    grid-template-columns: 1fr;
+    padding: 32px 24px;
+    margin: 24px 0 40px;
+  }
+  .sp-deco { display: none; }
+  .sp-watermark { right: 16px; }
+  .sp-title { font-size: clamp(2.8rem, 14vw, 4rem); }
+  .projects-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const revealEls = document.querySelectorAll('.scroll-reveal');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      revealEls.forEach(el => {
+        el.classList.remove('is-visible');
+        observer.observe(el);
+      });
+    } else {
+      revealEls.forEach(el => el.classList.add('is-visible'));
+    }
+  });
+</script>

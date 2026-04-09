@@ -107,7 +107,7 @@ const projectTypes = [
       </li>
 
       <!-- Projects — simple dropdown -->
-      <!-- <li class="nav-item has-dropdown">
+      <li class="nav-item has-dropdown">
         <a
           href="/projects"
           class={`nav-trigger${activeLink === 'projects' ? ' active' : ''}`}
@@ -134,7 +134,7 @@ const projectTypes = [
             </li>
           </ul>
         </div>
-      </li> -->
+      </li>
 
       <!-- Plain links -->
       <!-- <li>
@@ -172,6 +172,23 @@ const projectTypes = [
           <span class="mobile-drawer-tagline">{type.tagline}</span>
         </span>
         <span class="mobile-drawer-arrow">→</span>
+      </a>
+    ))}
+
+    <!-- Projects section header -->
+    <a class="mobile-drawer-section-head mobile-drawer-section-head--projects" href="/projects">
+      <span class="mobile-drawer-section-label">Projects</span>
+      <span class="mobile-drawer-section-arrow">→</span>
+    </a>
+
+    <!-- Project sub-sections -->
+    {projectTypes.map(pt => (
+      <a class="mobile-drawer-link mobile-drawer-link--project" href={pt.href}>
+        <span class="mobile-drawer-proj-bullet">◆</span>
+        <span class="mobile-drawer-text">
+          <span class="mobile-drawer-label">{pt.label}</span>
+        </span>
+        <span class="mobile-drawer-arrow" style="color: var(--yellow);">→</span>
       </a>
     ))}
 
@@ -605,8 +622,8 @@ const projectTypes = [
 }
 
 .mobile-drawer.is-open {
-  /* section-head(~52) + 4 links(~60px ea = 240) + about(~60) + buffer = ~380 */
-  max-height: 480px;
+  /* writing-head(~52) + 4 writing(~60ea=240) + projects-head(~52) + 3 proj(~52ea=156) + about(~60) + buffer */
+  max-height: 700px;
 }
 
 /* Desktop: drawer is fully removed from flow */
@@ -720,6 +737,46 @@ const projectTypes = [
   font-size: 0.75rem;
   color: var(--col-accent);
   flex-shrink: 0;
+}
+
+/* ----------------------------------------------------------------
+   Projects section header — yellow on black variant
+   ---------------------------------------------------------------- */
+.mobile-drawer-section-head--projects {
+  background: var(--yellow);
+  border-top: 3px solid var(--black);
+}
+
+.mobile-drawer-section-head--projects:hover {
+  background: #f0d800;
+}
+
+.mobile-drawer-section-head--projects .mobile-drawer-section-label {
+  color: var(--black);
+}
+
+.mobile-drawer-section-head--projects .mobile-drawer-section-arrow {
+  color: var(--black);
+  opacity: 0.6;
+}
+
+/* Projects sub-links */
+.mobile-drawer-link--project {
+  --col-accent: var(--yellow);
+  --col-dark: var(--black);
+  border-left-color: var(--yellow);
+  padding: 12px 20px;
+}
+
+.mobile-drawer-proj-bullet {
+  font-size: 0.55rem;
+  color: var(--black);
+  flex-shrink: 0;
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
 }
 
 /* ----------------------------------------------------------------

@@ -44,7 +44,12 @@ Tasks are ordered by priority. Work through them top to bottom.
 - Uncommented About link in `src/components/Nav.astro`
 - **TODO:** Swap placeholder GitHub/LinkedIn URLs with real ones in `src/pages/about.astro` and `src/components/Footer.astro`
 
-### 7. Projects section
-- Routes: `/projects`, `/projects/side`, `/projects/open-source`, `/projects/experiments`
-- Uncomment the Projects dropdown in `src/components/Nav.astro:106-133`
-- Build index and sub-section pages matching the writing section style
+### ~~7. Projects section~~ ✓ DONE
+- Created `src/pages/projects/index.astro` — Memphis Milano landing page, black hero with floating geometry, 3-column category grid (yellow/green/purple)
+- Created `src/pages/projects/side.astro` — card grid with status badges (live/wip/archived), tech pills, yellow hero
+- Created `src/pages/projects/open-source.astro` — contribution cards with type badges, green hero
+- Created `src/pages/projects/experiments.astro` — numbered list layout with hypothesis blockquotes, purple hero
+- Uncommented Projects dropdown in `src/components/Nav.astro`
+- Added Projects section + sub-links to mobile drawer
+- Added `theme-projects` to `global.css` dot-grid selector and `BaseLayout.astro` type union
+- **TODO:** Replace placeholder project data in all four pages with real projects
